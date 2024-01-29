@@ -1,0 +1,150 @@
+<ng-template #modalSIM let-modalSim>
+  <form [formGroup]="formRegistro">
+    <div class="modal-header">
+      <h5 class="modal-title">{{tituloModal}}</h5>
+      <button type="button" class="close" (click)="modalSim.close('by: close icon')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-sm-12">
+          <h6 for="nombre" class="text-muted mb-2 float-right"><strong>No. de cliente:
+            </strong>{{frmRegistro.idClienteMasivo.value}}</h6>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="nombre">Nombre(s):</label>
+            <input type="text" class="form-control" formControlName="nombres" autocomplete="off" maxlength="50"
+              placeholder="nombres" readonly
+              [ngClass]="{'is-invalid': frmRegistro.nombres.errors && frmRegistro.nombres.touched}">
+            <div *ngIf="frmRegistro.nombres.errors?.required && frmRegistro.nombres.touched" class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="primerApellido">Primer Apellido:</label>
+            <input type="text" class="form-control" formControlName="primerApellido" autocomplete="off" maxlength="50"
+              placeholder="Primer Apellido" readonly
+              [ngClass]="{'is-invalid': frmRegistro.primerApellido.errors && frmRegistro.primerApellido.touched}">
+            <div *ngIf="frmRegistro.primerApellido.errors?.required && frmRegistro.primerApellido.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="segundoApellido">Segundo Apellido:</label>
+            <input type="text" class="form-control" formControlName="segundoApellido" autocomplete="off" maxlength="50"
+              placeholder="Segundo Apellido" readonly
+              [ngClass]="{'is-invalid': frmRegistro.segundoApellido.errors && frmRegistro.segundoApellido.touched}">
+            <div *ngIf="frmRegistro.segundoApellido.errors?.required && frmRegistro.segundoApellido.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-lg-7 col-xl-8 stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-baseline mb-2">
+                <h6 class="card-title mb-0">SIMS asignados</h6>
+              </div>
+              <div class="table-responsive" style="height: 450px; overflow-y: auto;">
+                <div class="item" *ngIf="loaderTablaSimsCliente">
+                  <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }">
+                  </ngx-skeleton-loader>
+                </div>
+                <table class="table table-hover mb-0">
+                  <thead>
+                    <tr>
+                      <th class="pt-0">#</th>
+                      <th class="pt-0">ICC</th>
+                      <th class="pt-0">MSISDN</th>
+                      <th class="pt-0">IMSI</th>
+                      <th class="pt-0">Estatus</th>
+                      <th class="pt-0">Fecha de asignación</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let sim of simsCliente; let indice = index">
+                      <td>{{indice+1}}</td>
+                      <td>{{sim.icc}}</td>
+                      <td>{{sim.msisdn}}</td>
+                      <td>{{sim.imsi}}</td>
+                      <td>{{sim.estatusSim}}</td>
+                      <td>{{sim.fechaAlta | date: "dd/MM/yyyy hh:mm a":'UTC'}}</td>
+                      <td>
+                        <button type="button" class="btn btn-xs btn-danger btn-icon mr-1" placement="bottom"
+                          ngbTooltip="Desvincular" (click)="onDesvincularSim(sim)">
+                          <i class="feather icon-minus-circle"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-xl-4 stretch-card">
+          <div class="card rounded">
+            <div class="card-body">
+              <h6 class="card-title">Lista de SIMS</h6>
+              <div class="form-group">
+                <label class="control-label">Buscar</label>
+                <div class="input-group">
+                  <input type="text" style="padding: 18px;" class="form-control" placeholder="Buscar" #filtro
+                    (keyup)="onActualizarFiltro(filtro.value)" maxlength="30" />
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"
+                      (click)="this.onActualizarFiltro(filtro.value)">
+                      <i class="feather icon-search"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="item" *ngIf="loaderTablaSimsPorAsignar">
+                <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }"></ngx-skeleton-loader>
+              </div>
+              <div style="height: 250px;" class="item d-flex align-items-center justify-content-center"
+                *ngIf="!loaderTablaSimsPorAsignar && simsFiltrados.length == 0">
+                <h5 class="text-center text- text-info">
+                  <p>No se encontraron sims para asignar</p>
+                </h5>
+              </div>
+              <div style="max-height: 350px; overflow-y: auto;">
+                <div class="d-flex justify-content-between mb-2 pb-2 border-bottom" *ngFor="let sim of simsFiltrados">
+                  <div class="d-flex align-items-center hover-pointer">
+                    <img class="img-xs rounded-circle" src="/assets/images/chipsimsdcard.png" alt="">
+                    <div class="ml-2">
+                      <p>MSISDN: {{sim.msisdn}}</p>
+                      <p class="tx-11 text-muted"><strong>ICC: </strong>{{sim.icc}}</p>
+                      <p class="tx-11 text-muted"><strong>IMSI: </strong>{{sim.imsi}}</p>
+                    </div>
+                  </div>
+                  <button class="btn btn-icon" ngbTooltip="Asignar SIM" (click)="onAsignarSim(sim)">
+                    <i data-feather="plus" appFeatherIcon></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalSim.close('by: close button')">Cancelar</button>
+      <button *ngIf="habilitarForm" type="submit" [disabled]="!formRegistro.valid"
+        class="btn btn-primary">Aceptar</button>
+    </div>
+  </form>
+</ng-template>

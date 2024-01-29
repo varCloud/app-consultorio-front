@@ -1,0 +1,99 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Usuarios</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Operadores</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Administración de usuarios</h4>
+                <p class="card-description mb-0">Administre los usuarios <a href="javascript:()"> para atención de
+                        clientes </a>en sus centros de call center.</p>
+                <button type="button" class="btn btn-primary float-right"
+                    (click)="this.onAbrirModalRegistro()">Registrar usuario</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label class="control-label">Buscar</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar" #filtro
+                            (keyup)="updateFilter(filtro.value)" maxlength="30" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"
+                                (click)="this.updateFilter(filtro.value)"> <i class="feather icon-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="table-responsive">
+                    <div class="item" *ngIf="this.loaderTable">
+                        <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }">
+                        </ngx-skeleton-loader>
+                    </div>
+                    <ngx-datatable *ngIf="!this.loaderTable" class="bootstrap" [rows]="this.filteredData"
+                        [loadingIndicator]="true" [footerHeight]="50" [limit]="10" rowHeight="auto"
+                        [columnMode]="this.ColumnMode.force">
+
+                        <ngx-datatable-column name="Nombre" prop="nombreCompleto" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Usuario" [prop]="'usuario'" [sortable]="false">
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Correo" [prop]="'correo'" [sortable]="false"></ngx-datatable-column>
+                        <ngx-datatable-column name="Teléfono" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.telefono }}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Acciones" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <div class="d-flex justify-content-center align-items-center flex-wrap w-60">
+                                    <button type="button" class="btn btn-success btn-icon btn-sm mx-auto"
+                                        (click)="this.onVer(row)">
+                                        <i class="feather icon-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-icon btn-sm mx-auto"
+                                        (click)="this.onEditar(row)">
+                                        <i class="feather icon-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto"
+                                        (click)="this.onDesactivar(row)">
+                                        <i class="feather icon-trash"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-icon btn-sm mx-auto"
+                                        (click)="this.onAbrirModalCambiarContrasena(row)">
+                                        <i class="feather icon-settings"></i>
+                                    </button>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-mdl-registro-call-center [AbrirModal]="model" (cerrarModal)="onCerrarModalRegistro($event)">
+</app-mdl-registro-call-center>
+
+
+<app-mdl-cambiar-contrasena [AbrirModal]="modelContrasena" (cerrarModal)="onCerrarModalContrasena($event)">
+</app-mdl-cambiar-contrasena>

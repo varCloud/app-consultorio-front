@@ -1,0 +1,145 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Telefonia</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Asignación de Sims</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Asignación de sims</h4>
+                <p class="card-description mb-0">Administre los <a href="javascript:()"> </a>sims para sus usuarios.</p>
+                <!-- <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Cargar
+                    Sims</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label for="exampleInputUsername1">Rol</label>
+                        <ng-select
+                          [(ngModel)]="this.idTipoUsuario"
+                           [searchable]="false" 
+                           [closeOnSelect]="true"
+                            [placeholder]="'Seleccione'">
+                            <ng-option *ngFor="let item of this.tiposUsuarios" [value]="item.idTipoUsuario">
+                                {{item.descripcion}}</ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="form-group" style="flex-direction: column; display: flex;">
+                        <label for="">&nbsp;</label>
+                        <button (click)="this.obtenerUsuarios()" class="btn btn-secondary btn-icon-text" type="button"><i
+                                class="feather icon-search btn-icon-prepend"></i> </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 ">
+                        <div class="form-group">
+                            <div ngbDropdown>
+                                <button class="btn btn-info" id="dropdownBasic1" ngbDropdownToggle>Ver
+                                    {{this.limitRows}}</button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button *ngFor="let item of [1,2,3,4,5]" ngbDropdownItem
+                                        (click)="this.limitRows= 20*item">Ver {{20*item}}</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar" #filtro
+                                (keyup)="updateFilter(filtro.value)" maxlength="30" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item" *ngIf="this.loaderTable">
+                    <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }">
+                    </ngx-skeleton-loader>
+                </div>
+
+                <div class="table-responsive" *ngIf="!this.loaderTable" >
+                    <ngx-datatable
+                     class="bootstrap" 
+                     [rows]="this.filteredData"
+                     [loadingIndicator]="true"
+                     [columnMode]="'force'"
+                     [footerHeight]="50" 
+                     [limit]="limitRows"
+                     rowHeight="auto"
+                   >
+
+                        <ngx-datatable-column name="Nombre" prop="nombreCompleto" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        
+                        <ngx-datatable-column name="Usuario" [prop]="'usuario'" [sortable]="false"></ngx-datatable-column>
+                        
+                        <ngx-datatable-column name="Correo" [prop]="'correo'" [sortable]="false"></ngx-datatable-column>
+                        
+                        <ngx-datatable-column name="Teléfono" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.telefono }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        
+                        <ngx-datatable-column name="Rol"  prop="descripcionTipoUsuario"
+                            [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <span class="{{this.coloresService.colorTipoUsuario(row['idTipoUsuario']).badge}}" >
+                                   
+                                    {{row['descripcionTipoUsuario']}}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Acciones" [width]="20" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <div class="d-flex justify-content-center align-items-center flex-wrap w-70">
+                                    <button type="button" class="btn btn-success btn-icon btn-sm mx-auto"
+                                    ngbTooltip="Ver Sims" placement="bottom"
+                                        (click)="this.onVerSimsAsigndas(row)">
+                                        <i class="feather icon-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-icon btn-sm mx-auto"
+                                    ngbTooltip="Editar Sims" placement="bottom"
+                                        (click)="this.onEditarSimsAsigndas(row)">
+                                        <i class="feather icon-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-icon btn-sm mx-auto"
+                                    ngbTooltip="Asginar Sims" placement="bottom"
+                                        (click)="this.onAbrirModalAsignarSim(row)">
+                                        <i class="feather icon-phone-call"></i>
+                                    </button>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-mdl-asignar-sim [AbrirModal]="model" (cerrarModal)="onCerrarModalRegistro($event)">
+</app-mdl-asignar-sim>
+
+
+<app-mdl-sims-asignadas [AbrirModal]="modelSimsAsignadas" (cerrarModal)="onCerrarModalSimsAsignadas($event)">
+</app-mdl-sims-asignadas>
+
+
+<app-mdl-editar-sims-asignadas [AbrirModal]="modelSimsEditarAsignadas" (cerrarModal)="onCerrarModaEditarSimsAsignadas($event)">
+</app-mdl-editar-sims-asignadas>

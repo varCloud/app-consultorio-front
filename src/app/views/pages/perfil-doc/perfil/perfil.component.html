@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title"></h6>
+        <form [formGroup]="this.formPerfil">
+          <div class="row">
+            <div class="form-group col-md-auto">
+              <label for="nombres" class=" ">Fondo Encabezado</label>
+              <input class="form-control wd-150" [(colorPicker)]="this.sesionService.sesion.colorFondoEncabezados"
+                [style.background]="this.sesionService.sesion.colorFondoEncabezados" />
+              <p class="text-muted mt-2">Value: {{this.sesionService.sesion.colorFondoEncabezados}}</p>
+            </div>
+            <div class="form-group col-md-auto">
+              <label for="nombres" class=" ">Colo Letra Encabezado</label>
+              <input class="form-control wd-150" [(colorPicker)]="this.sesionService.sesion.colorTituloEncabezados"
+                [style.background]="this.sesionService.sesion.colorTituloEncabezados" />
+              <p class="text-muted mt-2">Value: {{this.sesionService.sesion.colorTituloEncabezados}}</p>
+            </div>
+            <div class="form-group col-md-auto">
+              <label for="nombres" class=" ">Color Texto Contenido</label>
+              <input class="form-control wd-150" [(colorPicker)]="this.sesionService.sesion.colorCotenido" [style.background]="this.sesionService.sesion.colorCotenido" />
+              <p class="text-muted mt-2">Value: {{this.sesionService.sesion.colorCotenido}}</p>
+            </div>
+            <div class="form-group col-md-auto">
+              <label for="nombres" class=" ">Color Fondo Contenido</label>
+              <input class="form-control wd-150" [(colorPicker)]="this.sesionService.sesion.colorFondoContenido" [style.background]="this.sesionService.sesion.colorFondoContenido" />
+              <p class="text-muted mt-2">Value: {{this.sesionService.sesion.colorFondoContenido}}</p>
+            </div>
+            <div class="form-group col-md-auto">
+              <label for="nombres" class=" ">Color Nombre Doctor</label>
+              <input class="form-control wd-150" [(colorPicker)]="this.sesionService.sesion.colorTextoDoctor"
+                [style.background]="this.sesionService.sesion.colorTextoDoctor" />
+              <p class="text-muted mt-2">Value: {{this.sesionService.sesion.colorTextoDoctor}}</p>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-2">
+            <button class="btn btn-success mr-2" type="button" (click)="this.guardar()" >Guardar</button>
+
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title"></h6>
+          <table>
+            <tr>
+              <td style="text-align: left; "  ><p [style.color]="this.sesionService.sesion.colorTextoDoctor">{{this.sesionService.sesion.nombre}}</p></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; "  [style.background]="this.sesionService.sesion.colorFondoEncabezados" [style.color]="this.sesionService.sesion.colorTituloEncabezados" >MOTIVO DE LA CONSULTA</td>
+            </tr>
+            <tr>
+              <td  style="border: 1px solid black;"  [style.background]="this.sesionService.sesion.colorFondoContenido"  [style.color]="this.sesionService.sesion.colorCotenido" >Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</td>
+            </tr>
+          </table>
+
+      </div>
+    </div>
+  </div>
+</div>

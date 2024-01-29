@@ -1,0 +1,126 @@
+
+    <div class="modal-header">
+        <h5 class="modal-title">{{this.tituloModal}}</h5>
+        <button type="button" class="close" (click)="activeModal.dismiss('Cross click')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body ">
+                  <h4 class="card-title text-center text-info">Datos generales</h4>
+                  <div class="row " *ngIf="this.notaMedica" >
+                      <div class="col-md-7">
+                        <div >
+                          <p class="card-description mb-0">Paciente: <span class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.notaMedica.nombres}} {{this.notaMedica.apellidoPaterno}} {{this.notaMedica.apellidoMaterno}}</span></p>
+                          <p class="card-description mb-0">Edad:<span  class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.notaMedica.edad}}</span></p>
+                          <p class="card-description mb-0">FechaAlta: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.notaMedica.fechaAlta | date : 'yyyy/mm/dd'}} {{this.notaMedica.fechaAlta | date : 'HH:mm:ss a'}}</span></p>
+                          <p class="card-description mb-0">Ultima visita: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.notaMedica.fechaUltimaNotaMedica | date : 'yyyy/mm/dd'}} {{this.notaMedica.fechaUltimaNotaMedica | date : 'HH:mm:ss a'}}</span></p>
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div>
+                          <p class="card-description mb-0"># Paciente: <span class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.notaMedica.idUsuario}}</span></p>
+                          <p class="card-description mb-0">Teléfono:<span  class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.notaMedica.telefono}}</span></p>
+                          <p class="card-description mb-0">Correo: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.notaMedica.correo}}</span></p>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body ">
+                  <h4 class="card-title text-center text-info">Signos Vitales</h4>
+                  <div class="row " *ngIf="this.notaMedica" >
+                      <div class="col-md-7">
+                        <div >
+                          <p class="card-description mb-0">Peso: <span class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.notaMedica.peso}}</span></p>
+                          <p class="card-description mb-0">Talla: <span  class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.notaMedica.talla}}</span></p>
+                          <p class="card-description mb-0">Ta: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.notaMedica.ta }}</span></p>
+                          <p class="card-description mb-0">Fc: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.notaMedica.fc}}</span></p>
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div>
+                          
+                          <p class="card-description mb-0">Fr: <span  class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.notaMedica.fr}}</span></p>
+                          <p class="card-description mb-0">Temperatura: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.notaMedica.temperatura}}</span></p>
+                          <p class="card-description mb-0">Saturación: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.notaMedica.saturacion}}</span></p>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body ">
+                  <h4 class="card-title text-center text-info">Motivo de la Consulta </h4>
+                  <div class="row " *ngIf="this.notaMedica" >
+                      <div class="col-md-12">
+                        <p class="card-description mb-0"  [innerHtml]="this.notaMedica.motivoConsulta">  </p>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body ">
+                  <h4 class="card-title text-center text-info">Diagnostico </h4>
+                  <div class="row " *ngIf="this.notaMedica" >
+                      <div class="col-md-12">
+                        <p class="card-description mb-0"  [innerHtml]="this.notaMedica.diagnostico">  </p>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body ">
+                  <h4 class="card-title text-center text-info">Laboratorios </h4>
+                  <div class="row " *ngIf="this.notaMedica" >
+                      <div class="col-md-12">
+                        <p class="card-description mb-0"  [innerHtml]="this.notaMedica.diagnostico">  </p>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body ">
+                  <h4 class="card-title text-center text-info">Tratamiento (Receta Medica) </h4>
+                  <div class="row " *ngIf="this.notaMedica" >
+                      <div class="col-md-12">
+                        <p class="card-description mb-0"  [innerHtml]="this.notaMedica.tratamiento">  </p>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('Cross click')">Aceptar</button>
+        <button type="button" class="btn btn-warning" (click)="this.imprimir()">Imprimir</button>
+    </div>
+<!-- </ng-template> -->

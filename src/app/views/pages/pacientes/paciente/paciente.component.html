@@ -1,0 +1,28 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink=".">Pacientes</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Pacientes</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Administración de Pacientes</h4>
+        <p class="card-description mb-0">Agrega un nuevo paciente  y registra notas medicas ...!!</p>
+        <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Registrar
+          pacientes.</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="text-muted mt-2">Value: {{color1}}</p>
+<app-tabla-usuarios [PintarTabla]="this.lstPacientes" (OutPutOnAgregarNota)="this.onAgregarNotaMedica($event)"
+  (OutPutOnEditar)="this.onEditar($event)" (OutPutOnVer)="this.onVer($event)" (OutPutOnUltimaNota)="this.onUltimaNotaMedica($event)" ></app-tabla-usuarios>
+
+<!-- <app-mdl-registra-paciente #mdlWizard
+ [AbrirModal]="this.model"
+ (cerrarModal)="onCerrarModalRegistro($event)"
+ ></app-mdl-registra-paciente> -->

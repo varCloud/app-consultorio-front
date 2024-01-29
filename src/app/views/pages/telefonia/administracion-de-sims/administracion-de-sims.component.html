@@ -1,0 +1,199 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Telefonia</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Administracion de Sims</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Administración de sims</h4>
+                <p class="card-description mb-0">Administre los <a href="javascript:()"> </a>sims para sus usuarios.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <form (ngSubmit)="onBuscar()" [formGroup]="this.formFiltro">
+                    <div class="row">
+
+                        <div class="form-group col-md-3">
+                            <div class="form-group">
+                                <label for="">MVNO</label>
+                                <ng-select [searchable]="false" [closeOnSelect]="true"
+                                    [placeholder]="'Seleccione un MVNO'" formControlName="idMVNO">
+                                    <ng-option *ngFor="let item of this.lstMvnos" [value]="item.idMvno">
+                                        {{item.descripcion}}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <div class="form-group">
+                                <label for="">Estatus Asignacion</label>
+                                <ng-select formControlName="idEstatusAsignacionSim" [searchable]="false"
+                                    [closeOnSelect]="true" [placeholder]="'Selecciona'">
+                                    <ng-option *ngFor="let item of this.lstAsignacion"
+                                        [value]="item.idEstatusAsignacionSim">{{item.estatusAsignacion}}</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <div class="form-group">
+                                <label for="">Estatus Sim</label>
+                                <ng-select [searchable]="false" formControlName="idEstatusSim" [closeOnSelect]="true"
+                                    [placeholder]="'Selecciona'">
+                                    <ng-option *ngFor="let item of this.lstEstatusSim" [value]="item.idEstatusSim">
+                                        {{item.estatusSim}}</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1" >
+                            <div class="form-group" style="flex-direction: column; display: flex;">
+                                <label for="">&nbsp;</label>
+                                <button (click)="this.onBuscar()" type="button" class="btn btn-primary btn-icon-text">
+                                    Buscar &nbsp;<i class="feather icon-search btn-icon-prepend"></i>
+                                </button>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <div class="form-group" style="flex-direction: column; display: flex;">
+                                <label for="">&nbsp;</label>
+                                <button (click)="this.onAbrirModalRegistro()" type="button"
+                                    class="btn btn-primary btn-icon-text">
+                                    Agregar Sim &nbsp;<i class="feather icon-plus btn-icon-prepend"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <div class="form-group col-md-1">
+                        <div ngbDropdown>
+                            <button class="btn btn-info" id="dropdownBasic1" ngbDropdownToggle>Ver
+                                {{this.limitRows}}</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                <button *ngFor="let item of [1,2,3,4,5]" ngbDropdownItem
+                                    (click)="this.limitRows= 20*item">Ver {{20*item}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-9">
+                        <div ngbDropdown>
+                            <button class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>Exportar</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                <button ngbDropdownItem (click)="this.onExportar(1)">Exportar filtro</button>
+                                <button ngbDropdownItem (click)="this.onExportar(0)">Todas las Paginas</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar" #filtro
+                                (keyup)="updateFilter(filtro.value)" maxlength="30" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="table-responsive">
+                    <div class="item" *ngIf="this.loaderTable">
+                        <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }">
+                        </ngx-skeleton-loader>
+                    </div>
+                    <ngx-datatable *ngIf="!this.loaderTable" class="bootstrap" [rows]="this.filteredData"
+                        [loadingIndicator]="true" [columnMode]="'force'" [footerHeight]="50" [limit]="limitRows"
+                        [scrollbarH]="true" rowHeight="auto">
+
+                        <ngx-datatable-column name="Bussines entity"  prop="beId" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="IMSI"  prop="imsi" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+          
+
+                        <ngx-datatable-column name="ICC " [width]="250"  prop="icc" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="MSISDN " prop="msisdn" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="PIN " [width]="80" prop="pin" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Fecha Alta " prop="fechaRegistro" [sortable]="true">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{value | date:'dd/MM/yyyy'}}
+                            </ng-template>
+                        </ngx-datatable-column> -
+
+                     
+
+                        <ngx-datatable-column name="Asginacion"  prop="idEstatusAsignacionSim"
+                            [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <span
+                                    class="{{this.coloresService.colorEstatusAsignacion(value).badge}}">{{row['estatusAsignacionSim']}}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Estatus Sim" prop="estatusSim" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <span
+                                    class="{{this.coloresService.colorEstatusSim(row['idEstatusSim']).badge}}">{{row['estatusSim']}}</span>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Acciones" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <div class="d-flex justify-content-center align-items-center flex-wrap w-70">
+                                    <button type="button" class="btn btn-success btn-icon btn-sm mx-auto"
+                                        placement="bottom" ngbTooltip="Ver" (click)="this.onVer(row)">
+                                        <i class="feather icon-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-icon btn-sm mx-auto"
+                                        placement="bottom" ngbTooltip="Editar" (click)="this.onEditar(row)">
+                                        <i class="feather icon-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto"
+                                        placement="bottom" ngbTooltip="Eliminar" (click)="this.onDesactivar(row)">
+                                        <i class="feather icon-trash"></i>
+                                    </button>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+
+                    </ngx-datatable>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-mdl-registrar-sim [AbrirModal]="model" (cerrarModal)="onCerrarModalRegistro($event)"></app-mdl-registrar-sim>

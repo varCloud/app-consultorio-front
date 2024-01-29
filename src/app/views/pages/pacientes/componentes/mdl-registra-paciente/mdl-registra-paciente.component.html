@@ -1,0 +1,380 @@
+<div #modalRegistro>
+
+  <div class="modal-header">
+    <h5 class="modal-title">{{this.tituloModal}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="this.modelo.modal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <aw-wizard #wizardForm>
+
+      <aw-wizard-step stepTitle="Datos Generales" class="mt-5">
+        <form (ngSubmit)="submitDatiosGenerales()" [formGroup]="formRegistro" class="text-center">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="nombres" class=" ">Nombres</label>
+
+                <input type="text" class="form-control" id="nombres" formControlName="nombres"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.nombres.errors}" placeholder="Nombres">
+                <div *ngIf="isForm1Submitted && frmRegistro.nombres.errors?.required" class="invalid-feedback">
+                  Required
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="apellidoPaterno" class=" ">Apellido Paterno</label>
+
+                <input type="text" class="form-control" id="apellidoPaterno" formControlName="apellidoPaterno"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.apellidoPaterno.errors}"
+                  placeholder="Apellido Paterno">
+                <div *ngIf="isForm1Submitted && frmRegistro.apellidoPaterno.errors?.required" class="invalid-feedback">
+                  Required
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="apellidoMaterno" class=" ">Apellido Materno</label>
+
+                <input type="text" class="form-control" id="apellidoMaterno" formControlName="apellidoMaterno"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.apellidoMaterno.errors}"
+                  placeholder="Apellido Materno ">
+                <div *ngIf="isForm1Submitted && frmRegistro.apellidoMaterno.errors?.required" class="invalid-feedback">
+                  Required
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="apellidoPaterno" class=" ">Fecha Nacimiento</label>
+                <div class="input-group">
+                  <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="selectedDate"
+                    ngbDatepicker formControlName="_fechaNacimiento" #d="ngbDatepicker"
+                    [minDate]="{year: 1950, month: 1, day: 1}" [minDate]="{year: 202, month: 1, day: 1}"
+                    (dateSelect)="onDateSelected(d)" (blur)="onDateSelected(d)"
+                    [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro._fechaNacimiento.errors}">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-light btn-icon calendar" type="button" (click)="d.toggle()">
+                      <i data-feather="calendar" appFeatherIcon class="text-secondary"></i>
+                    </button>
+                  </div>
+                  <div *ngIf="isForm1Submitted && frmRegistro._fechaNacimiento.errors?.required"
+                    class="invalid-feedback">
+                    Required
+                  </div>
+
+                </div>
+                <label for="" *ngIf="this.showAge" class="mt-2 text-primary">EDAD: {{this.showAge}}</label>
+              </div>
+
+            </div>
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="telefono" class=" ">Teléfono</label>
+
+                <input type="text" class="form-control" id="telefono" formControlName="telefono" mask="00 00 00 00 00"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.telefono.errors}" placeholder="Teléfono">
+                <div *ngIf="isForm1Submitted && frmRegistro.telefono.errors?.required" class="invalid-feedback">
+                  Required
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="correo" class=" ">Correo electrónico</label>
+                <input type="text" class="form-control" id="correo" formControlName="correo"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.correo.errors}"
+                  placeholder="Correo electrónico">
+                <div *ngIf="isForm1Submitted && frmRegistro.correo.errors?.required" class="invalid-feedback">
+                  Required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="apellidoPaterno" class=" ">Ocupación</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="ocupacion" formControlName="ocupacion"
+                    [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.ocupacion.errors}"
+                    placeholder="Ocupaciòn">
+                  <div *ngIf="isForm1Submitted && frmRegistro.ocupacion.errors?.required" class="invalid-feedback">
+                    Required
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="estadoCivil" class=" ">Estado Civil</label>
+                <input type="text" class="form-control" id="estadoCivil" formControlName="estadoCivil"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.estadoCivil.errors}" placeholder="Teléfono">
+                <div *ngIf="isForm1Submitted && frmRegistro.estadoCivil.errors?.required" class="invalid-feedback">
+                  Required
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group ">
+                <label for="residencia" class=" ">Lugar de residencia</label>
+                <input type="text" class="form-control" id="residencia" formControlName="residencia"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.residencia.errors}"
+                  placeholder="Lugar de residencia">
+                <div *ngIf="isForm1Submitted && frmRegistro.residencia.errors?.required" class="invalid-feedback">
+                  Required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="apellidoPaterno" class=" ">Escolaridad</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="escolaridad" formControlName="escolaridad"
+                    [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.escolaridad.errors}"
+                    placeholder="Ocupaciòn">
+                  <div *ngIf="isForm1Submitted && frmRegistro.escolaridad.errors?.required" class="invalid-feedback">
+                    Required
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-2">
+            <button class="btn btn-primary" type="submit">Siguiente</button>
+          </div>
+        </form>
+      </aw-wizard-step>
+
+      <aw-wizard-step stepTitle="Antecedentes Personales no Patológicos" class="mt-5">
+        <form (ngSubmit)="submitAntecedentesPersonales()" [formGroup]="this.formAntePersonales" class="text-center">
+          <div class="row">
+            <div class="col-md-4"
+              *ngFor="let pregunta of this.formAntePersonales.controls.preguntas.controls let i = index"
+              [formGroup]="pregunta">
+              <label for="nombres" class=" ">{{pregunta.controls.preguntaDesc.value}}</label>
+              <div class="form-group ">
+
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" formControlName="siNo" value="si"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    SI
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" checked class="form-check-input" value="no" formControlName="siNo"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    NO
+                  </label>
+                </div>
+                <div *ngIf="isFormAntePersonalesSubmitted && pregunta.controls.siNo.errors?.required"
+                  class="error-radio">
+                  Seleccione una opcion
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="pregunta.controls.siNo.value=='si'">
+                <label for="nombres" class=" ">Descripcion</label>
+                <textarea class="form-control" rows="5" id="descripcion" formControlName="descripcion"
+                  [ngClass]="{'is-invalid':  isFormAntePersonalesSubmitted && pregunta.controls.descripcion.errors?.required}"></textarea>
+                <div *ngIf="isFormAntePersonalesSubmitted && pregunta.controls.descripcion.errors?.required"
+                  class="invalid-feedback">
+                  Seleccione una opcion
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-2">
+            <button class="btn btn-light mr-2" type="button" awPreviousStep>Regresar</button>
+            <button class="btn btn-primary" type="submit">Siguiente</button>
+          </div>
+        </form>
+      </aw-wizard-step>
+
+      <aw-wizard-step stepTitle="Antecedes Gineco-Obstétricos" class="mt-5">
+        <form (ngSubmit)="submitAntecedentesGineco()" [formGroup]="this.formAnteGineco" class="text-center">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let pregunta of this.formAnteGineco.controls.preguntas.controls let i = index"
+              [formGroup]="pregunta">
+              <label for="nombres" class=" ">{{pregunta.controls.preguntaDesc.value}}</label>
+              <div class="form-group ">
+
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" formControlName="siNo" value="si"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    SI
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" checked class="form-check-input" value="no" formControlName="siNo"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    NO
+                  </label>
+                </div>
+                <div *ngIf="isFormAnteGinecoSubmitted && pregunta.controls.siNo.errors?.required" class="error-radio">
+                  Seleccione una opcion
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="pregunta.controls.siNo.value=='si'">
+                <label for="nombres" class=" ">Descripcion</label>
+                <textarea class="form-control" rows="5" id="descripcion" formControlName="descripcion"
+                  [ngClass]="{'is-invalid':  isFormAnteGinecoSubmitted && pregunta.controls.descripcion.errors?.required}"></textarea>
+                <div *ngIf="isFormAnteGinecoSubmitted && pregunta.controls.descripcion.errors?.required"
+                  class="invalid-feedback">
+                  Seleccione una opcion
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-2">
+            <button class="btn btn-light mr-2" type="button" awPreviousStep>Regresar</button>
+            <button class="btn btn-primary" type="submit">Siguiente</button>
+          </div>
+        </form>
+      </aw-wizard-step>
+
+      <aw-wizard-step stepTitle="Antecedentes familiares" class="mt-5">
+        <form (ngSubmit)="submitAntecedentesFamiliares()" [formGroup]="formAnteFamiliares" class="text-center">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let pregunta of this.frmFamiliaresPreg.controls; let i = index"
+              [formGroup]="this.getFrmPreguntaFam(i)">
+              <label for="nombres" class=" ">{{frmFamiliaresPreg.controls[i].get('preguntaDesc').value}}</label>
+              <div class="form-group ">
+
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" formControlName="siNo" value="si"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    SI
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" checked class="form-check-input" value="no" formControlName="siNo"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    NO
+                  </label>
+                </div>
+                <div *ngIf="isFormAntecedenFamSubmitted && frmFamiliaresPreg.controls[i].get('siNo').errors?.required" class="error-radio">
+                  Seleccione una opcion
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="frmFamiliaresPreg.controls[i].get('siNo').value=='si'">
+                <label for="nombres" class=" ">Descripcion</label>
+                <textarea class="form-control" rows="5" id="descripcion" formControlName="descripcion"
+                  [ngClass]="{'is-invalid':  isFormAntecedenFamSubmitted && frmFamiliaresPreg.controls[i].get('descripcion').errors?.required}"></textarea>
+                <div *ngIf="isFormAntecedenFamSubmitted && frmFamiliaresPreg.controls[i].get('descripcion').errors?.required"
+                  class="invalid-feedback">
+                  Seleccione una opcion
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-2">
+            <button class="btn btn-light mr-2" type="button" awPreviousStep>Regresar</button>
+            <button class="btn btn-primary" type="submit">Siguiente</button>
+          </div>
+        </form>
+      </aw-wizard-step>
+
+      <aw-wizard-step stepTitle="Antecedentes Patológicos" class="mt-5">
+        <form (ngSubmit)="submitAntecedentesPatologicos()" [formGroup]="this.formAntePatologicos" class="text-center">
+          <div class="row">
+            <div class="col-md-4"
+              *ngFor="let pregunta of this.formAntePatologicos.controls.preguntas.controls let i = index"
+              [formGroup]="pregunta">
+              <label for="nombres" class=" ">{{pregunta.controls.preguntaDesc.value}}</label>
+              <div class="form-group ">
+
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" formControlName="siNo" value="si"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    SI
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" checked class="form-check-input" value="no" formControlName="siNo"
+                      (change)="clearFilter($event , pregunta)">
+                    <i class="input-frame"></i>
+                    NO
+                  </label>
+                </div>
+                <div *ngIf="isFormAntePatologicosSubmitted && pregunta.controls.siNo.errors?.required"
+                  class="error-radio">
+                  Seleccione una opcion
+                </div>
+              </div>
+
+              <div class="form-group" *ngIf="pregunta.controls.siNo.value=='si'">
+                <label for="nombres" class=" ">Descripcion</label>
+                <textarea class="form-control" rows="5" id="descripcion" formControlName="descripcion"
+                  [ngClass]="{'is-invalid':  isFormAntePersonalesSubmitted && pregunta.controls.descripcion.errors?.required}"></textarea>
+                <div *ngIf="isFormAntePersonalesSubmitted && pregunta.controls.descripcion.errors?.required"
+                  class="invalid-feedback">
+                  Seleccione una opcion
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-2">
+            <button class="btn btn-light mr-2" type="button" awPreviousStep>Regresar</button>
+            <button class="btn btn-primary" type="submit">Siguiente</button>
+          </div>
+        </form>
+      </aw-wizard-step>
+
+
+      <aw-wizard-step stepTitle="Registro Completo">
+        <div class="text-center">
+          <i data-feather="check-circle" appFeatherIcon class="text-success mt-4 mb-2 icon-xxl"></i>
+          <h3 *ngIf="!this.modelo.editar" class="text-muted mb-3">Paciente Registrado Exitosamente !</h3>
+          <h3 *ngIf="this.modelo.editar" class="text-muted mb-3">Datos del Paciente Actualizados</h3>
+          <p class="w-75 mx-auto mb-4 text-muted"></p>
+        </div>
+        <div class="d-flex justify-content-center mt-2">
+          <button class="btn btn-light mr-2" type="button" awPreviousStep>Regresar</button>
+          <button class="btn btn-success" type="button" (click)="finishFunction()">Aceptar</button>
+        </div>
+      </aw-wizard-step>
+
+    </aw-wizard>
+
+
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cancelar</button> -->
+    <!-- <button *ngIf="!this.model.ver" type="submit" [disabled]="!formRegistro.valid" class="btn btn-primary">Aceptar</button> -->
+  </div>
+
+</div>

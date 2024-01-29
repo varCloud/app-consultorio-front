@@ -1,0 +1,166 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/clientes/corporativo">Clientes corporativos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Perfil</li>
+  </ol>
+</nav>
+
+<div class="profile-page tx-13">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      <div class="profile-header">
+        <div class="cover">
+          <div class="gray-shade"></div>
+          <figure style="max-height: 272px;overflow: hidden;">
+            <img src="/assets/images/fondo_perfil.jpg" class="img-fluid" alt="profile cover">
+          </figure>
+          <div class="cover-body d-flex justify-content-between align-items-center">
+            <div>
+              <img class="profile-pic"
+                src="https://cdn4.iconfinder.com/data/icons/building-flat-4/64/41_building-enterprise-company-real-estate-29-512.png"
+                alt="profile">
+              <span class="profile-name">{{clienteCorporativo?.razonSocial}}</span>
+            </div>
+            <div class="d-none d-md-block">
+              <!--<button class="btn btn-primary btn-icon-text btn-edit-profile">
+                <i data-feather="edit" appFeatherIcon class="btn-icon-prepend"></i> Editar
+              </button>-->
+            </div>
+          </div>
+        </div>
+        <div class="header-links">
+          <ul class="links d-flex align-items-center mt-3 mt-md-0">
+            <li class="header-link-item d-flex align-items-center active">
+              <i class="mr-1 icon-md" data-feather="users" appFeatherIcon></i>
+              <a class="pt-1px d-none d-md-block" routerLink=".">Colaboradores</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row profile-body">
+    <!-- left wrapper start -->
+    <div class="d-none d-md-block col-md-4 col-xl-3 left-wrapper">
+      <div class="card rounded">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="card-title mb-0">Razón social:</h6>
+          </div>
+          <p>{{clienteCorporativo?.razonSocial}}</p>
+          <div class="mt-3">
+            <label class="tx-11 font-weight-bold mb-0 text-uppercase">No. de Cliente:</label>
+            <p class="text-muted">{{clienteCorporativo?.idClienteCorporativo}}</p>
+          </div>
+          <div class="mt-3">
+            <label class="tx-11 font-weight-bold mb-0 text-uppercase">RFC:</label>
+            <p class="text-muted">{{clienteCorporativo?.rfc}}</p>
+          </div>
+          <div class="mt-3">
+            <label class="tx-11 font-weight-bold mb-0 text-uppercase">Telefono:</label>
+            <p class="text-muted">{{clienteCorporativo?.telefono}}</p>
+          </div>
+          <div class="mt-3">
+            <label class="tx-11 font-weight-bold mb-0 text-uppercase">Fecha de registro:</label>
+            <p class="text-muted">{{clienteCorporativo?.fechaAlta | date: "dd/MM/yyyy"}}</p>
+          </div>
+          <div class="mt-3" *ngIf="clienteCorporativo?.colonia">
+            <label class="tx-11 font-weight-bold mb-0 text-uppercase">Dirección:</label>
+            <p class="text-muted">{{clienteCorporativo?.colonia}}, {{clienteCorporativo?.calle}}
+              #{{clienteCorporativo?.numeroExterior}}, C.P. {{clienteCorporativo?.codigoPostal}} </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- left wrapper end -->
+    <!-- middle wrapper start -->
+    <div class="col-md-8 col-xl-9 middle-wrapper">
+      <div class="row">
+        <div class="col-md-12 grid-margin">
+          <div class="card rounded">
+            <div class="card-header">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="col-md-6 d-flex align-items-center">
+                  <div class="ml-2">
+                    <p>Administarción de Colaboradores</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Registrar
+                    colaborador</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-10 ">
+                  <div class="form-group">
+                    <div ngbDropdown>
+                      <button class="btn btn-info" id="dropdownBasic1" ngbDropdownToggle>Ver
+                        {{this.limitRows}}</button>
+                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button *ngFor="let item of [1,2,3,4,5]" ngbDropdownItem (click)="this.limitRows= 20*item">Ver
+                          {{20*item}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-2">
+                  <div class="input-group">
+                    <input type="text" style="padding: 18px;" class="form-control" placeholder="Buscar" #filtro
+                      (keyup)="onActualizarFiltro(filtro.value)" maxlength="30" />
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <div class="item" *ngIf="loaderTable">
+                  <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }">
+                  </ngx-skeleton-loader>
+                </div>
+                <ngx-datatable class="bootstrap" [rows]="clientesFiltrados" [loadingIndicator]="true"
+                  [footerHeight]="50" [limit]="10" rowHeight="auto" [columnMode]="this.ColumnMode.force">
+                  <ngx-datatable-column name="Nombre" prop="nombreCompleto"></ngx-datatable-column>
+                  <ngx-datatable-column name="CURP" prop="curp"></ngx-datatable-column>
+                  <ngx-datatable-column name="Correo" prop="correo"></ngx-datatable-column>
+                  <ngx-datatable-column name="Telefono referencia" prop="telefonoAdicional"></ngx-datatable-column>
+                  <ngx-datatable-column name="Fecha de nacimiento">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.fechaNacimiento | date:'dd/MM/yyyy' : 'UTC'}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Fecha de registro">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.fechaAlta | date:'dd/MM/yyyy' : 'UTC'}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Acciones">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <div ngbDropdown class="position-absolute">
+                        <button class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>Acciones</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                          <button ngbDropdownItem (click)="onVer(row)">Ver</button>
+                          <button ngbDropdownItem (click)="onEditar(row)">Editar</button>
+                          <button ngbDropdownItem (click)="onAsignarSIM(row)">Asignar SIM</button>
+                          <button ngbDropdownItem (click)="onDesactivar(row)">Eliminar</button>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </ngx-datatable>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- middle wrapper end -->
+  </div>
+</div>
+
+
+<app-mdlregistro [AbrirModal]="abrirModalRegistro" [SetData]="dataCliente" [idCorporativo]="idClienteCorporativo"
+  (cerrarModal)="onCerrarModalRegistro($event)">
+</app-mdlregistro>
+
+<app-mdlsimcliente [AbrirModal]="abrirModalSIM" [SetData]="dataCliente" (cerrarModal)="onCerrarModalSim($event)">
+</app-mdlsimcliente>

@@ -1,0 +1,26 @@
+<div class="main-wrapper">
+  <div class="page-wrapper" style="margin-left: 0px !important; width: 100% !important;">
+    <div class="page-content">
+      <div class="row">
+        <div class="col-md-12 grid-margin">
+          <h4 class="text-center text-primary">Bienvenido al CRM de ORANGE</h4>
+          <hr>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-4 col-xl-4 grid-margin" *ngFor="let mvno of lstMvnos">
+          <div class="card">
+            <img src="assets/images/placeholder.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{mvno.descripcion}}</h5>
+              <p class="card-text"><strong>BusinessEntity: </strong>{{mvno.businessEntity}}</p>
+              <p class="card-text"><strong>Fecha registro: </strong>{{mvno.fechaAlta |date: 'dd/MM/yyyy'}}</p>
+              <a href="" (click)="onIngresar(mvno)" class="btn btn-primary mt-2 float-right">Ingresar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

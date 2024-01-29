@@ -1,0 +1,212 @@
+<nav class="navbar">
+  <a href="" class="sidebar-toggler" (click)="toggleSidebar($event)">
+    <i class="feather icon-menu"></i>
+  </a>
+  <div class="navbar-content">
+    <form class="search-form">
+      <!-- <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="feather icon-search"></i>
+          </div>
+        </div>
+        <input type="text" class="form-control" id="navbarForm" placeholder="Buscar...">
+      </div> -->
+    </form>
+    <ul class="navbar-nav">
+
+      <!--
+      <li class="nav-item nav-apps" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle id="appsDropdown">
+          <i class="link-icon feather icon-grid"></i>
+        </a>
+        <div ngbDropdownMenu aria-labelledby="appsDropdown">
+          <div class="dropdown-header d-flex align-items-center justify-content-between">
+            <p class="mb-0 font-weight-medium">Web Apps</p>
+            <a href="" (click)="false" class="text-muted">Edit</a>
+          </div>
+          <div class="dropdown-body">
+            <div class="d-flex align-items-center apps">
+              <a routerLink="/apps/chat"><i class="feather icon-message-square"></i><p>Chat</p></a>
+              <a routerLink="/apps/calendar"><i class="feather icon-calendar"></i><p>Calendar</p></a>
+              <a routerLink="/apps/email/inbox"><i class="feather icon-mail"></i><p>Email</p></a>
+              <a routerLink="/general/profile"><i class="feather icon-instagram"></i><p>Profile</p></a>
+            </div>
+          </div>
+          <div class="dropdown-footer d-flex align-items-center justify-content-center">
+            <a href="" (click)="false">View all</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item nav-messages" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle id="messageDropdown">
+          <i class="link-icon feather icon-mail"></i>
+        </a>
+        <div ngbDropdownMenu aria-labelledby="messageDropdown">
+          <div class="dropdown-header d-flex align-items-center justify-content-between">
+            <p class="mb-0 font-weight-medium">9 New Messages</p>
+            <a href="" (click)="false" class="text-muted">Clear all</a>
+          </div>
+          <div class="dropdown-body">
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="figure">
+                <img src="https://via.placeholder.com/30x30" alt="userr">
+              </div>
+              <div class="content">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p>Leonardo Payne</p>
+                  <p class="sub-text text-muted">2 min ago</p>
+                </div>
+                <p class="sub-text text-muted">Project status</p>
+              </div>
+            </a>
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="figure">
+                <img src="https://via.placeholder.com/30x30" alt="userr">
+              </div>
+              <div class="content">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p>Carl Henson</p>
+                  <p class="sub-text text-muted">30 min ago</p>
+                </div>
+                <p class="sub-text text-muted">Client meeting</p>
+              </div>
+            </a>
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="figure">
+                <img src="https://via.placeholder.com/30x30" alt="userr">
+              </div>
+              <div class="content">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p>Jensen Combs</p>
+                  <p class="sub-text text-muted">1 hrs ago</p>
+                </div>
+                <p class="sub-text text-muted">Project updates</p>
+              </div>
+            </a>
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="figure">
+                <img src="https://via.placeholder.com/30x30" alt="userr">
+              </div>
+              <div class="content">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p>Amiah Burton</p>
+                  <p class="sub-text text-muted">2 hrs ago</p>
+                </div>
+                <p class="sub-text text-muted">Project deadline</p>
+              </div>
+            </a>
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="figure">
+                <img src="https://via.placeholder.com/30x30" alt="userr">
+              </div>
+              <div class="content">
+                <div class="d-flex justify-content-between align-items-center">
+                  <p>Yaretzi Mayo</p>
+                  <p class="sub-text text-muted">5 hr ago</p>
+                </div>
+                <p class="sub-text text-muted">New record</p>
+              </div>
+            </a>
+          </div>
+          <div class="dropdown-footer d-flex align-items-center justify-content-center">
+            <a href="" (click)="false">View all</a>
+          </div>
+        </div>
+      </li>
+      -->
+      <!-- <li class="nav-item nav-notifications" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle id="notificationDropdown">
+          <i class="link-icon feather icon-bell"></i>
+          <div class="indicator">
+            <div class="circle"></div>
+          </div>
+        </a>
+        <div ngbDropdownMenu aria-labelledby="notificationDropdown">
+          <div class="dropdown-header d-flex align-items-center justify-content-between">
+            <p class="mb-0 font-weight-medium">6 Nuevas notificaciones</p>
+            <a href="" (click)="false" class="text-muted">Limpiar todas</a>
+          </div>
+          <div class="dropdown-body">
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="icon">
+                <i class="feather icon-user-plus"></i>
+              </div>
+              <div class="content">
+                <p>Nuevo cliente registrado</p>
+                <p class="sub-text text-muted">2 sec ago</p>
+              </div>
+            </a>
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="icon">
+                <i class="feather icon-gift"></i>
+              </div>
+              <div class="content">
+                <p>Nueva venta realizada</p>
+                <p class="sub-text text-muted">30 min ago</p>
+              </div>
+            </a>
+            <a href="" (click)="false" class="dropdown-item">
+              <div class="icon">
+                <i class="feather icon-alert-circle"></i>
+              </div>
+              <div class="content">
+                <p>Ocurrio un problema!</p>
+                <p class="sub-text text-muted">1 hrs ago</p>
+              </div>
+            </a>
+          </div>
+          <div class="dropdown-footer d-flex align-items-center justify-content-center">
+            <a href="" (click)="false">Ver todas</a>
+          </div>
+        </div>
+      </li> -->
+
+      <li class="nav-item nav-profile" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle id="profileDropdown">
+          <img src="../../../../assets/images/logo_receta.png" alt="profile">
+        </a>
+        <div ngbDropdownMenu aria-labelledby="profileDropdown">
+          <div class="dropdown-header d-flex flex-column align-items-center">
+            <div class="figure mb-3">
+              <img src="../../../../assets/images/logo_receta.png" alt="">
+            </div>
+            <div class="info text-center">
+              <div class="font-weight-bold mb-0">{{this.sesionService.sesion.nombre}}</div>
+              <p class="email text-muted mb-3 mt-3"><b>{{this.sesionService.sesion.cedula}}</b></p>
+              <p class="email text-muted mb-3"><b>{{this.sesionService.sesion.cedulaEspecialidad}}</b></p>
+            </div>
+          </div>
+          <div class="dropdown-body">
+            <ul class="profile-nav p-0 pt-3">
+              <!-- <li class="nav-item">
+                <a routerLink="/general/profile" class="nav-link">
+                  <i class="feather icon-user"></i>
+                  <span>Perfil</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" (click)="false" class="nav-link">
+                  <i class="feather icon-edit"></i>
+                  <span>Editar perfil</span>
+                </a>
+              </li> -->
+              <li class="nav-item">
+                <a href="" [routerLink]="'perfil-doc/perfil'" class="nav-link">
+                  <i class="feather icon-settings"></i>
+                  <span>Perfil</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" (click)="onLogout($event)" class="nav-link">
+                  <i class="feather icon-log-out"></i>
+                  <span>Cerrar sesión</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,101 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink=".">Clientes</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Masivos</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Administración de clientes</h4>
+        <p class="card-description mb-0">Administra tus clientes <a href="javascript:()"> para ofrecerles </a>los
+          diversos servicios que brindas.</p>
+        <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Registrar
+          cliente</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-10 ">
+            <div class="form-group">
+              <div ngbDropdown>
+                <button class="btn btn-info" id="dropdownBasic1" ngbDropdownToggle>Ver
+                  {{this.limitRows}}</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button *ngFor="let item of [1,2,3,4,5]" ngbDropdownItem (click)="this.limitRows= 20*item">Ver
+                    {{20*item}}</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group col-md-2">
+            <div class="input-group">
+              <input type="text" style="padding: 18px;" class="form-control" placeholder="Buscar" #filtro
+                (keyup)="onActualizarFiltro(filtro.value)" maxlength="30" />
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <div class="item" *ngIf="loaderTable">
+            <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }"></ngx-skeleton-loader>
+          </div>
+
+          <ngx-datatable class="bootstrap" [rows]="clientesFiltrados" [loadingIndicator]="true" [footerHeight]="50"
+            [limit]="limitRows" rowHeight="auto" [columnMode]="this.ColumnMode.force">
+            <ngx-datatable-column name="Nombre" prop="nombreCompleto"></ngx-datatable-column>
+            <ngx-datatable-column name="CURP" prop="curp"></ngx-datatable-column>
+            <ngx-datatable-column name="Correo" prop="correo"></ngx-datatable-column>
+            <ngx-datatable-column name="Telefono referencia" prop="telefonoAdicional"></ngx-datatable-column>
+            <ngx-datatable-column name="Fecha de nacimiento">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.fechaNacimiento | date:'dd/MM/yyyy' : 'UTC'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Fecha de registro">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.fechaAlta | date:'dd/MM/yyyy' : 'UTC'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Acciones">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <button type="button" class="btn btn-xs btn-success btn-icon mr-1" placement="bottom" ngbTooltip="Ver"
+                  (click)="onVer(row)">
+                  <i class="feather icon-eye"></i>
+                </button>
+                <button type="button" class="btn btn-xs btn-info btn-icon mr-1" placement="bottom" ngbTooltip="Editar"
+                  (click)="onEditar(row)">
+                  <i class="feather icon-edit"></i>
+                </button>
+                <button type="button" class="btn btn-xs btn-secondary btn-icon mr-1" placement="bottom"
+                  ngbTooltip="Asignar SIM" (click)="onAsignarSIM(row)">
+                  <i class="feather icon-phone-call"></i>
+                </button>
+                <button type="button" class="btn btn-xs btn-danger btn-icon mr-1" placement="bottom"
+                  ngbTooltip="Eliminar" (click)="onDesactivar(row)">
+                  <i class="feather icon-trash"></i>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-mdlregistro [AbrirModal]="abrirModalRegistro" [SetData]="dataCliente"
+  (cerrarModal)="onCerrarModalRegistro($event)">
+</app-mdlregistro>
+
+
+<app-mdlsimcliente [AbrirModal]="abrirModalSIM" [SetData]="dataCliente" (cerrarModal)="onCerrarModalSim($event)">
+</app-mdlsimcliente>

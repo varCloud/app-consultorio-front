@@ -1,0 +1,174 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Notas</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Notas Medicas</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Administración de Notas Medicas</h4>
+                <p class="card-description mb-0">Visualiza tus ultimas notas medias agregadas</p>
+                <!-- <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Registrar
+                    Nota Medica.</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <label class=" text-primary">Selecciona un rango de fechas para visualizar las notas medicas
+                    registradas</label>
+                <p class="card-description mb-0"></p>
+                <form class="form-inline range-selection">
+                    <div class="form-group hidden">
+                        <div class="input-group">
+                            <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                                [autoClose]="'outside'" (dateSelect)="onDateSelection($event , datepicker)"
+                                [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!">
+                            <ng-template #t let-date let-focused="focused">
+                                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                                    (mouseleave)="hoveredDate = null">
+                                    {{ date.day }}
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group" (click)="datepicker.toggle()">
+                            <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                                [value]="formatter.format(fromDate)"
+                                (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-light btn-icon" type="button">
+                                    <i data-feather="calendar" appFeatherIcon class="text-secondary"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ml-2">
+                        <div class="input-group" (click)="datepicker.toggle()">
+                            <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                                [value]="formatter.format(toDate)"
+                                (input)="toDate = validateInput(toDate, dpToDate.value)">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-light btn-icon" type="button">
+                                    <i data-feather="calendar" appFeatherIcon class="text-secondary"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ml-2">
+                        <button type="button" class="btn btn-primary float-right" (click)="buscar()" placement="bottom"
+                            ngbTooltip="Buscar">
+                            <i class="feather icon-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-10 ">
+                        <div class="form-group">
+                            <div ngbDropdown>
+                                <button class="btn btn-info" id="dropdownBasic1" ngbDropdownToggle>Ver
+                                    {{this.limitRows}}</button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button *ngFor="let item of [1,2,3,4,5]" ngbDropdownItem
+                                        (click)="this.limitRows= 20*item">Ver
+                                        {{20*item}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div class="input-group">
+                            <input type="text" style="padding: 18px;" class="form-control" placeholder="Buscar" #filtro
+                                (keyup)="updateFilter(filtro.value)" maxlength="30" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <div class="item" *ngIf="loaderTable">
+                        <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }">
+                        </ngx-skeleton-loader>
+                    </div>
+                    <ngx-datatable *ngIf="this.lstNotas.length != 0 && !loaderTable" class="bootstrap"
+                        [rows]="this.filteredData" [loadingIndicator]="true" [scrollbarH]="true" [footerHeight]="50"
+                        [limit]="limitRows" rowHeight="auto" [columnMode]="this.ColumnMode.force">
+
+
+                        <ngx-datatable-column name="#" prop="idNotaMedica" [sortable]="true">
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="# Paciente" [prop]="'idPaciente'" [sortable]="true">
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Nombre" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.nombres || '' }} {{row.apellidoPaterno || '' }} {{row.apellidoMaterno || ''}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Correo" [prop]="'correo'" [sortable]="false"></ngx-datatable-column>
+
+                        <ngx-datatable-column name="Ultima consulta" [prop]="'fechaAlta'" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.fechaAlta | date :"yyyy-MM-dd hh:mm:ss" }}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Acciones" [sortable]="false" [width]="100">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+
+                                <button type="button" class="btn btn-success btn-icon btn-sm mx-auto" placement="bottom"
+                                    ngbTooltip="Ver" (click)="this.onVer(row)">
+                                    <i class="feather icon-eye"></i>
+                                </button>
+                                &nbsp;
+                                <button type="button" class="btn btn-info btn-icon btn-sm mx-auto" placement="bottom"
+                                    ngbTooltip="Editar" (click)="onEditar(row)">
+                                    <i class="feather icon-edit"></i>
+                                </button>
+                                <!-- <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto" placement="bottom" ngbTooltip="Desactivar"
+                                        (click)="this.onDesactivar(row)">
+                                        <i class="feather icon-trash"></i>
+                                    </button> -->
+                                <!-- <button type="button" class="btn btn-primary btn-icon btn-sm mx-auto"
+                                        placement="bottom" ngbTooltip="Nota Medica">
+                                        <i class="feather icon-settings"></i>
+                                    </button> -->
+
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-2"  *ngIf="this.lstNotas.length == 0 && !loaderTable" >
+    <div class="col-md-12">
+        <ngb-alert [dismissible]="false" [type]="'icon-info'">
+            <i class="feather icon-alert-circle"></i>
+            Aun no tienes notas medicas
+        </ngb-alert>
+    </div>
+</div>

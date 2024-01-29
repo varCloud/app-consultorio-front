@@ -1,0 +1,171 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Usuarios</a></li>
+        <li class="breadcrumb-item active" aria-current="page">MVNO</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Administración de usuarios</h4>
+                <p class="card-description mb-0">Administre los usuarios <a href="javascript:()"> oficiales de nuestros
+                        MVNO </a>para el acceso al CRM.</p>
+                <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Registrar
+                    usuario</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tablaMVNO" class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>RFC</th>
+                                <th>Vigencia de licencia</th>
+                                <th>Activo</th>
+                                <th>Fecha de registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tiger Nixon------</td>
+                                <td>System Architect</td>
+                                <td>Edinburgh</td>
+                                <td>61</td>
+                                <td>2011/04/25</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap w-50">
+                                        <button type="button" class="btn btn-info btn-icon btn-sm mx-auto" (click)="onEditar()">
+                                            <i class="feather icon-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-search"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Garrett Winters</td>
+                                <td>Accountant</td>
+                                <td>Tokyo</td>
+                                <td>63</td>
+                                <td>2011/07/25</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap w-50">
+                                        <button type="button" class="btn btn-info btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-search"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ashton Cox</td>
+                                <td>Junior Technical Author</td>
+                                <td>San Francisco</td>
+                                <td>66</td>
+                                <td>2009/01/12</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap w-50">
+                                        <button type="button" class="btn btn-info btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-search"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Cedric Kelly</td>
+                                <td>Senior Javascript Developer</td>
+                                <td>Edinburgh</td>
+                                <td>22</td>
+                                <td>2012/03/29</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap w-50">
+                                        <button type="button" class="btn btn-info btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-search"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Airi Satou</td>
+                                <td>Accountant</td>
+                                <td>Tokyo</td>
+                                <td>33</td>
+                                <td>2008/11/28</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap w-50">
+                                        <button type="button" class="btn btn-info btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-search"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Brielle Williamson</td>
+                                <td>Integration Specialist</td>
+                                <td>New York</td>
+                                <td>61</td>
+                                <td>2012/12/02</td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap w-50">
+                                        <button type="button" class="btn btn-info btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-search"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-icon btn-sm mx-auto">
+                                            <i class="feather icon-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-mdlregistro
+[AbrirModal]="abrirModalRegistro"
+(cerrarModal)="onCerrarModalRegistro($event)">
+</app-mdlregistro>

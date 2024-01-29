@@ -1,0 +1,149 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Historial Medica</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Historial Medica</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Administración de Historial Medica</h4>
+                <p class="card-description mb-0">Visualiza todas las notas medicas de un usuario</p>
+                <!-- <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Registrar
+                    Nota Medica.</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"></h4>
+                <p class="card-description mb-0"></p>
+                <div class="form-group col-md-12">
+                    <div class="form-group">
+                        <label for="" class="text-primary">Seleciona un Paciente para imprimir su historial</label>
+                        <ng-select notFoundText="No se encontraron coincidencias" (change)="onSeleccionPaciente($event)"
+                            [searchable]="true" [closeOnSelect]="true" bindLabel="nombres" bindValue="idPaciente"
+                            [(ngModel)]="this.idPaciente" [placeholder]="'Busca un paciente'">
+
+                            <ng-option *ngFor="let item of this.lstPacientes" [value]="item.idPaciente">
+                                {{item.nombres}} {{item.apellidoPaterno}} {{item.apellidoMaterno || ''}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-auto">
+                        <div class="form-group">
+                            <div ngbDropdown>
+                                <button class="btn btn-info btn-sm" id="dropdownBasic1" ngbDropdownToggle>Ver
+                                    {{this.limitRows}}</button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button *ngFor="let item of [1,2,3,4,5]" ngbDropdownItem
+                                        (click)="this.limitRows= 20*item">Ver
+                                        {{20*item}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-auto">
+                        <button type="button" class="btn btn-primary btn-icon btn-sm mx-auto" (click)="this.descargarExpediente()"
+                            placement="bottom" ngbTooltip="Descargar Historial">
+                            <i class="feather icon-download-cloud"></i>
+                        </button>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <button type="button" class="btn btn-warning btn-icon btn-sm mx-auto" placement="bottom"
+                            ngbTooltip="Agregar Nota Medica" (click)="this.onAgregarNota()">
+                            <i class="feather icon-settings"></i>
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div class="input-group">
+                            <input type="text" style="padding: 18px;" class="form-control" placeholder="Buscar" #filtro
+                                (keyup)="updateFilter(filtro.value)" maxlength="30" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <div class="item" *ngIf="loaderTable">
+                        <ngx-skeleton-loader count="5" [theme]="{ 'border-radius': '0', height: '25px' }">
+                        </ngx-skeleton-loader>
+                    </div>
+                    <ngx-datatable *ngIf="this.lstNotasMedicas.length != 0 && !loaderTable" class="bootstrap"
+                        [rows]="this.filteredData" [loadingIndicator]="true" [scrollbarH]="true" [footerHeight]="50"
+                        [limit]="limitRows" rowHeight="auto" [columnMode]="this.ColumnMode.force">
+
+
+                        <ngx-datatable-column name="# Nota" [width]="100" prop="idNotaMedica" [sortable]="true">
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="# Paciente" [prop]="'idPaciente'" [width]="100" [sortable]="true">
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Nombre" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.nombres || '' }} {{row.apellidoPaterno || '' }} {{row.apellidoMaterno || ''}}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Fecha Nota" [prop]="'fechaNotaMedica'" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.fechaAlta | date :"yyyy-MM-dd hh:mm:ss" }}
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Motivo Consulta" [prop]="'motivoConsulta'" [sortable]="true">
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Diagnostico" [prop]="'diagnostico'" [sortable]="true">
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Tratamiento" [prop]="'diagnostico'" [sortable]="true">
+                        </ngx-datatable-column>
+
+
+                        <ngx-datatable-column name="Acciones" [sortable]="false" [width]="100">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <div class="d-flex justify-content-center align-items-center flex-wrap w-100">
+                                    <button type="button" class="btn btn-success btn-icon btn-sm mx-auto"
+                                        placement="bottom" ngbTooltip="Ver" (click)="this.onVer(row)">
+                                        <i class="feather icon-eye"></i>
+                                    </button>
+
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="this.loaderTable">
+    <div class="col-md-12 d-flex align-items-center justify-content-center" style="height: 100px;">
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Espere por favor...</span>
+            </div>
+        </div>
+    </div>
+</div>

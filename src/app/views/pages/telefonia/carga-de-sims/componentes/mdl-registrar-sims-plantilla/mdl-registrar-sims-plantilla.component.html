@@ -1,0 +1,43 @@
+<ng-template #modalCargaSimsPlantilla let-modal>
+    <form  [formGroup]="formRegistro">
+        <div class="modal-header">
+            <h5 class="modal-title">{{this.tituloModal}}</h5>
+            <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+           
+            <div class="form-group">
+                <label for="exampleInputUsername1">Nombre </label>
+                <input type="file" class="form-control" formControlName="nombreCompleto" (change)="onSeleccionarArchivo($event)"
+                    [ngClass]="{'is-invalid': frmRegistro.nombreCompleto.errors && frmRegistro.nombreCompleto.touched}">
+                <div *ngIf="frmRegistro.nombreCompleto.errors?.required && frmRegistro.nombreCompleto.touched"
+                    class="invalid-feedback">
+                    Seleccione un archivo 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">MVNO</label>
+                <ng-select 
+                [searchable]="false"
+                formControlName="idMvno"
+                [closeOnSelect]="true"
+                [ngClass]="{'is-invalid': frmRegistro.idMvno.errors && frmRegistro.idMvno.touched}"
+                [placeholder]="'Seleccione un MVNO'"
+                >
+                <ng-option *ngFor="let item of this.lstMvnos"  [value]="item.idMvno" >{{item.descripcion}}</ng-option> 
+              </ng-select>
+                <div *ngIf="frmRegistro.idMvno.errors?.required && frmRegistro.idMvno.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cancelar</button>
+            <button  (click)="registrarMasivoSim()"  type="submit"  class="btn btn-primary">Aceptar</button>
+        </div>
+    </form>
+</ng-template>
+

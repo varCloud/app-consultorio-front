@@ -1,0 +1,54 @@
+<ng-template #modalContrasena let-modal>
+    <form (ngSubmit)="onCambiar(modal)" [formGroup]="formContrasena">
+        <div class="modal-header">
+            <h5 class="modal-title">{{this.tituloModal}}</h5>
+            <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="exampleInputUsername1">Contraseña</label>
+                <div class="input-group">
+                    <input type="{{this.esShowPass ? 'text' : 'password'}}" class="form-control"
+                        formControlName="contrasena" autocomplete="off" placeholder="Constraseña"
+                        [ngClass]="{'is-invalid': frmContrasena.contrasena.errors && frmContrasena.contrasena.touched}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" (click)="this.onShowPass()"> <i
+                                class="feather {{this.esShowPass ? 'icon-eye' : 'icon-eye-off'}}"></i></button>
+                    </div>
+                    <div *ngIf="frmContrasena.contrasena.errors?.required && frmContrasena.contrasena.touched"
+                        class="invalid-feedback">
+                        Esta campo es requerido
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputUsername1">Confirmar Contraseña</label>
+                <div class="input-group">
+                    <input type="{{this.esShowPass ? 'text' : 'password'}}" class="form-control"
+                        formControlName="contrasena_confirm" autocomplete="off" placeholder="Constraseña"
+                        [ngClass]="{'is-invalid': frmContrasena.contrasena_confirm.errors && frmContrasena.contrasena_confirm.touched}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" (click)="this.onShowPass()"> <i
+                                class="feather {{this.esShowPass ? 'icon-eye' : 'icon-eye-off'}}"></i></button>
+                    </div>
+                    <div *ngIf="frmContrasena.contrasena_confirm.errors?.required && frmContrasena.contrasena_confirm.touched"
+                        class="invalid-feedback">
+                        Esta campo es requerido
+                    </div>
+                    <div *ngIf="frmContrasena.contrasena_confirm.errors?.passwordConfirmin && frmContrasena.contrasena_confirm.touched"
+                        class="invalid-feedback">
+                        Las contraseñas no coinciden
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cancelar</button>
+            <button type="submit" [disabled]="!this.formContrasena.valid"
+                class="btn btn-primary">Aceptar</button>
+        </div>
+    </form>
+</ng-template>

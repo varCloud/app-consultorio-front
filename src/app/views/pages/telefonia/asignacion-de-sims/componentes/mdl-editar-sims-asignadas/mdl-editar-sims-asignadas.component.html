@@ -1,0 +1,131 @@
+<ng-template #modalEditarAsigSim let-modal class="modal-xl">
+
+    <div class="modal-header">
+        <h5 class="modal-title">{{this.tituloModal}}</h5>
+        <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <div class="">
+                    <p><span class="subtitulo-medio">Nombre: </span> <span class="subtitulo"> {{this.model.nombreCompleto}}</span></p>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3">
+                <div class="">
+                    <p><span class="subtitulo-medio">Rol: </span><span class="subtitulo">  {{this.model.descripcionTipoUsuario}}</span></p>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3">
+                <div class="">
+                    <p><span class="subtitulo-medio">Correo: </span> <span class="subtitulo"> {{this.model.correo}}</span></p>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3">
+                <div class="">
+                    <p><span class="subtitulo-medio">Seleccionados: </span> <span class="subtitulo" style="color:var(--primary) !important"> {{this.selected.length}}</span></p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div ngbDropdown>
+                        <button class="btn btn-secondary" id="dropdownBasic1" ngbDropdownToggle>Seleccionar</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <!-- <button ngbDropdownItem (click)="this.onPaginaActual()">Pagina Actual</button> -->
+                            <button ngbDropdownItem (click)="this.onSeleccionarTodo()">Todas las Paginas</button>
+                            <button ngbDropdownItem (click)="this.onLimpiarTodo()">Limpiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button  class="btn btn-primary btn-icon-text"  (click)="this.liberarSimsUsuario()" type="button"> Liberar Sims </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row d-flex flex-row-reverse">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div ngbDropdown>
+                                <button class="btn btn-info" id="dropdownBasic1" ngbDropdownToggle>Ver {{this.limitRows}}</button>
+                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button *ngFor="let item of [1,2,3,4,5]" ngbDropdownItem (click)="this.limitRows= 20*item">Ver {{20*item}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar" #filtro
+                                (keyup)="updateFilter(filtro.value)" maxlength="30" />
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <ngx-datatable style="height: 100%;"
+                        class="bootstrap" 
+                        [rows]="this.filteredData"
+                        [headerHeight]="50"
+                        [footerHeight]="30"
+                        [rowHeight]="40"
+                        [limit]="this.limitRows"
+                        [columnMode]="this.ColumnMode.force"
+                        (page)="onPage($event)"
+                        [selected]="selected"
+                        [selectionType]="SelectionType.checkbox"
+                        [selectAllRowsOnPage]="true"
+                        [loadingIndicator]="true"
+                        (select)="onSelect($event)">
+
+                   
+
+                        <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false"
+                            [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="MSISDN" [width]="100"  prop="imsi"
+                            [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <p> <span style="color:var(--red);">{{row['msisdn']}}</span></p>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="ICC"  prop="imsi" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <p> <span style="color:var(--green);">{{row['icc']}}</span></p>
+                            </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="IMSI" prop="imsi" [sortable]="false">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <p> <span style="color:var(--blue);">{{row['imsi']}}</span></p>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+            <!-- <div class="col-md-2">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-secondary" (click)="this.adelante()">>></button>
+                    <button type="button" class="btn btn-outline-secondary" (click)="this.atras()"> << </button>
+                </div>
+            </div>
+            <div class="col-md-5">
+
+            </div> -->
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cancelar</button>
+    </div>
+</ng-template>

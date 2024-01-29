@@ -1,0 +1,165 @@
+<ng-template #modalRegistrarSim let-modal>
+    <form  [formGroup]="formRegistro">
+        <div class="modal-header">
+            <h5 class="modal-title">{{this.tituloModal}}</h5>
+            <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+           
+            <div class="form-group">
+                <label for="exampleInputUsername1">IMSI </label>
+                <input type="text" class="form-control" formControlName="imsi" autocomplete="off"
+                     mask="0000 0000 0000 000"  [showMaskTyped]="true"
+                    placeholder="IMSI"
+                    [ngClass]="{'is-invalid': frmRegistro.imsi.errors && frmRegistro.imsi.touched}">
+                <div *ngIf="frmRegistro.imsi.errors?.required && frmRegistro.imsi.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">IMSI RB1</label>
+                <input type="text" class="form-control" formControlName="imsi_rb1" autocomplete="off"
+                    placeholder="Usuario"
+                    [ngClass]="{'is-invalid': frmRegistro.imsi_rb1.errors && frmRegistro.imsi_rb1.touched}">
+                <div *ngIf="frmRegistro.imsi_rb1.errors?.required && frmRegistro.imsi_rb1.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">IMSI RB2</label>
+                    <input type="text" class="form-control"  formControlName="imsi_rb2" autocomplete="off"
+                        placeholder="IMSI RB2"
+                        [ngClass]="{'is-invalid': frmRegistro.imsi_rb2.errors && frmRegistro.imsi_rb2.touched}">
+                <div *ngIf="frmRegistro.imsi_rb2.errors?.required && frmRegistro.imsi_rb2.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">ICC</label>
+                <input type="text" class="form-control" formControlName="iccId" autocomplete="off"
+                    mask="0000 0000 0000 0000 000" [showMaskTyped]="true" placeholder="ICC"
+                    [ngClass]="{'is-invalid': frmRegistro.iccId.errors && frmRegistro.iccId.touched}">
+                <div *ngIf="frmRegistro.iccId.errors?.required && frmRegistro.iccId.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">MSISDN</label>
+                <input type="text" class="form-control" formControlName="msisdn" autocomplete="off" placeholder="MSISDN"
+                    mask="00 0000 0000"  [showMaskTyped]="true"
+                    [ngClass]="{'is-invalid': frmRegistro.msisdn.errors && frmRegistro.msisdn.touched}">
+                <div *ngIf="frmRegistro.msisdn.errors?.required && frmRegistro.msisdn.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="exampleInputUsername1">PIN</label>
+                <input type="text" class="form-control" formControlName="pin" autocomplete="off" placeholder="PIN"
+                    [ngClass]="{'is-invalid': frmRegistro.pin.errors && frmRegistro.pin.touched}">
+                <div *ngIf="frmRegistro.pin.errors?.required && frmRegistro.pin.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">PUK</label>
+                <input type="text" class="form-control" formControlName="puk" autocomplete="off" placeholder="PUK"
+                    [ngClass]="{'is-invalid': frmRegistro.puk.errors && frmRegistro.puk.touched}">
+                <div *ngIf="frmRegistro.puk.errors?.required && frmRegistro.puk.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Serie</label>
+                <input type="text" class="form-control" formControlName="serie" autocomplete="off" placeholder="Serie"
+                    [ngClass]="{'is-invalid': frmRegistro.serie.errors && frmRegistro.serie.touched}">
+                <div *ngIf="frmRegistro.serie.errors?.required && frmRegistro.serie.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Estatus Asignación</label>
+                <ng-select 
+                [searchable]="false"
+                formControlName="idEstatusAsignacionSim"
+                [closeOnSelect]="true"
+                [ngClass]="{'is-invalid': frmRegistro.idEstatusAsignacionSim.errors && frmRegistro.idEstatusAsignacionSim.touched}"
+                [placeholder]="'Selecciona'"
+                >
+                <ng-option  [disabled]="true"  [value]="''" >Selecciona</ng-option> 
+                <ng-option *ngFor="let item of this.lstAsignacion"  [value]="item.idEstatusAsignacionSim" >{{item.estatusAsignacion}}</ng-option> 
+              </ng-select>
+                <div *ngIf="frmRegistro.idEstatusAsignacionSim.errors?.required && frmRegistro.idEstatusAsignacionSim.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Estatus Sim</label>
+                <ng-select 
+                [searchable]="false"
+                formControlName="idEstatusSim"
+                [closeOnSelect]="true"
+                [ngClass]="{'is-invalid': frmRegistro.idEstatusSim.errors && frmRegistro.idEstatusSim.touched}"
+                [placeholder]="'Selecciona'"
+                >
+                <ng-option  [disabled]="true"  [value]="''" >Selecciona</ng-option> 
+                <ng-option *ngFor="let item of this.lstEstatusSim"  [value]="item.idEstatusSim" >{{item.estatusSim}}</ng-option> 
+              </ng-select>
+                <div *ngIf="frmRegistro.idEstatusSim.errors?.required && frmRegistro.idEstatusSim.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Producto</label>
+                <ng-select 
+                [searchable]="false"
+                formControlName="idProduct"
+                [closeOnSelect]="true"
+                [ngClass]="{'is-invalid': frmRegistro.idProduct.errors && frmRegistro.idProduct.touched}"
+                [placeholder]="'Selecciona'"
+                >
+                <ng-option  [disabled]="true"  [value]="''" >Selecciona</ng-option> 
+                <ng-option *ngFor="let item of this.lstProductos"  [value]="item.idProducto" >{{item.producto}}</ng-option> 
+              </ng-select>
+                <div *ngIf="frmRegistro.idProduct.errors?.required && frmRegistro.idProduct.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">MVNO</label>
+                <ng-select 
+                [searchable]="false"
+                formControlName="idMvno"
+                [closeOnSelect]="true"
+                [ngClass]="{'is-invalid': frmRegistro.idMvno.errors && frmRegistro.idMvno.touched}"
+                [placeholder]="'Seleccione un MVNO'"
+                >
+                <ng-option *ngFor="let item of this.lstMvnos"  [value]="item.idMvno" >{{item.descripcion}}</ng-option> 
+              </ng-select>
+                <div *ngIf="frmRegistro.idMvno.errors?.required && frmRegistro.idMvno.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cancelar</button>
+            <button *ngIf="!this.model.ver" type="submit"  (click)="modal.close('guardar sim')" [disabled]="formRegistro.invalid" class="btn btn-primary">Aceptar</button>
+        </div>
+    </form>
+</ng-template>

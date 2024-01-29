@@ -1,0 +1,111 @@
+<ng-template #modalRegistro let-modal>
+    <form (ngSubmit)="onGuardar(modal)" [formGroup]="formRegistro">
+        <div class="modal-header">
+            <h5 class="modal-title">{{this.tituloModal}}</h5>
+            <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+           
+            <div class="form-group">
+                <label for="exampleInputUsername1">Nombre </label>
+                <input type="text" class="form-control" formControlName="nombreCompleto" autocomplete="off"
+                    placeholder="Nombre Completo"
+                    [ngClass]="{'is-invalid': frmRegistro.nombreCompleto.errors && frmRegistro.nombreCompleto.touched}">
+                <div *ngIf="frmRegistro.nombreCompleto.errors?.required && frmRegistro.nombreCompleto.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Usuario</label>
+                <input type="text" class="form-control" formControlName="us" autocomplete="off"
+                    placeholder="Usuario"
+                    [ngClass]="{'is-invalid': frmRegistro.us.errors && frmRegistro.us.touched}">
+                <div *ngIf="frmRegistro.us.errors?.required && frmRegistro.us.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Contraseña</label>
+                <div class="input-group">
+                    <input type="{{this.esShowPass ? 'text' : 'password'}}" class="form-control"  formControlName="contrasena" autocomplete="off"
+                        placeholder="Constraseña"
+                        [ngClass]="{'is-invalid': frmRegistro.contrasena.errors && frmRegistro.contrasena.touched}">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" (click)="this.onShowPass()"> <i
+                                class="feather {{this.esShowPass ? 'icon-eye' : 'icon-eye-off'}}"></i></button>
+                    </div>
+                </div>
+                <div *ngIf="frmRegistro.contrasena.errors?.required && frmRegistro.contrasena.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Teléfono</label>
+                <input type="text" class="form-control" formControlName="telefono" autocomplete="off"
+                    mask="(00) 0000 0000" [showMaskTyped]="true" placeholder="Teléfomo"
+                    [ngClass]="{'is-invalid': frmRegistro.telefono.errors && frmRegistro.telefono.touched}">
+                <div *ngIf="frmRegistro.telefono.errors?.required && frmRegistro.telefono.touched"
+                    class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">Correo</label>
+                <input type="text" class="form-control" formControlName="correo" autocomplete="off" placeholder="Correo"
+                    [ngClass]="{'is-invalid': frmRegistro.correo.errors && frmRegistro.correo.touched}">
+                <div *ngIf="frmRegistro.correo.errors?.required && frmRegistro.correo.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+                <div *ngIf="frmRegistro.correo.getError('email') && frmRegistro.correo.touched" class="invalid-feedback">
+                    Ingrese un correo valido
+                </div>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="exampleInputUsername1">Rol</label>
+                <ng-select 
+                [searchable]="false"
+                formControlName="idTipoUsuario"
+                [closeOnSelect]="true"
+                [ngClass]="{'is-invalid': frmRegistro.idTipoUsuario.errors && frmRegistro.idTipoUsuario.touched}"
+                [placeholder]="'Seleccione un Rol'"
+                >
+                <ng-option *ngFor="let item of this.tiposUsuarios"  [value]="item.idTipoUsuario" >{{item.descripcion}}</ng-option> 
+              </ng-select>
+                <div *ngIf="frmRegistro.idTipoUsuario.errors?.required && frmRegistro.idTipoUsuario.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputUsername1">MVNO</label>
+                <ng-select 
+                [searchable]="false"
+                formControlName="idMvno"
+                [closeOnSelect]="true"
+                [ngClass]="{'is-invalid': frmRegistro.idMvno.errors && frmRegistro.idMvno.touched}"
+                [placeholder]="'Seleccione un MVNO'"
+                >
+                <ng-option *ngFor="let item of this.lstMvnos"  [value]="item.idMvno" >{{item.descripcion}}</ng-option> 
+              </ng-select>
+                <div *ngIf="frmRegistro.idMvno.errors?.required && frmRegistro.idMvno.touched" class="invalid-feedback">
+                    Esta campo es requerido
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cancelar</button>
+            <button *ngIf="!this.model.ver" type="submit" [disabled]="!formRegistro.valid" class="btn btn-primary">Aceptar</button>
+        </div>
+    </form>
+</ng-template>

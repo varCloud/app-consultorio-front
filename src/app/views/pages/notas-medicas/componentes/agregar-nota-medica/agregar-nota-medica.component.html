@@ -1,0 +1,190 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink=".">Notas Medicas</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Agregar Notas</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+
+      <div class="card-body">
+        <h4 class=" text-center card-title text-primary">Nueva Nota Medica</h4>
+        <p class="card-description mb-0"></p>
+      </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-5 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body ">
+        <h4 class="card-title text-center text-info">Datos generales</h4>
+        <div class="row">
+            <div class="col-md-7">
+              <div *ngIf="this.paciente">
+                <p class="card-description mb-0">Paciente: <span class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.paciente.nombres}} {{this.paciente.apellidoPaterno}} {{this.paciente.apellidoMaterno}}</span></p>
+                <p class="card-description mb-0">Edad:<span  class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.paciente.edad}}</span></p>
+                <p class="card-description mb-0">FechaAlta: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.paciente.fechaAlta | date : 'yyyy/mm/dd'}} {{this.paciente.fechaAlta | date : 'HH:mm:ss a'}}</span></p>
+                <p class="card-description mb-0">Ultima visita: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.paciente.fechaUltimaNotaMedica | date : 'yyyy/mm/dd'}} {{this.paciente.fechaUltimaNotaMedica | date : 'HH:mm:ss a'}}</span></p>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div *ngIf="this.paciente">
+                <p class="card-description mb-0"># Paciente: <span class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.paciente.idUsuario}}</span></p>
+                <p class="card-description mb-0">Teléfono:<span  class="text-primary" style="font-weight: 600; font-size: 14px;"> {{this.paciente.telefono}}</span></p>
+                <p class="card-description mb-0">Correo: <span  class="text-primary" style="font-weight: 600; font-size: 14px;">{{this.paciente.correo}}</span></p>
+              </div>
+            </div>
+        </div>
+        
+        <!-- <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Registrar
+            pacientes.</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title text-primary">Signos Vitales</h4>
+        <p class="card-description mb-0"></p>
+        <form [formGroup]="formRegistro">
+          <div class="row">
+            <div class="col-md-auto">
+              <div class="form-group ">
+                <label for="peso" class=" ">Peso</label>
+
+                <input type="text" class="form-control" id="peso" formControlName="peso"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.peso.errors}" placeholder="Peso">
+                <div *ngIf="isForm1Submitted && frmRegistro.peso.errors?.required" class="invalid-feedRegresar">
+                  Required
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="form-group ">
+                <label for="talla" class=" ">Talla</label>
+
+                <input type="text" class="form-control" id="talla" formControlName="talla"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.talla.errors}" placeholder="Talla">
+                <div *ngIf="isForm1Submitted && frmRegistro.talla.errors?.required" class="invalid-feedback">
+                  Required
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="form-group ">
+                <label for="temperatura" class=" ">Temperatura </label>
+
+                <input type="text" class="form-control" id="temperatura" formControlName="temperatura"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.temperatura.errors}"
+                  placeholder="Temperatura ">
+                <div *ngIf="isForm1Submitted && frmRegistro.temperatura.errors?.required" class="invalid-feedback">
+                  Required
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="form-group ">
+                <label for="saturacion" class=" ">Saturación </label>
+
+                <input type="text" class="form-control" id="saturacion" formControlName="saturacion"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.saturacion.errors}"
+                  placeholder="Saturación ">
+                <div *ngIf="isForm1Submitted && frmRegistro.saturacion.errors?.required" class="invalid-feedback">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="form-group ">
+                <label for="ta" class=" ">TA </label>
+
+                <input type="text" class="form-control" id="ta" formControlName="ta"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.ta.errors}" placeholder="TA ">
+                <div *ngIf="isForm1Submitted && frmRegistro.ta.errors?.required" class="invalid-feedback">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="form-group ">
+                <label for="fc" class=" ">FC </label>
+
+                <input type="text" class="form-control" id="fc" formControlName="fc"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.fc.errors}" placeholder="FC ">
+                <div *ngIf="isForm1Submitted && frmRegistro.fc.errors?.required" class="invalid-feedback">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-auto">
+              <div class="form-group ">
+                <label for="fr" class=" ">FR </label>
+
+                <input type="text" class="form-control" id="fr" formControlName="fr"
+                  [ngClass]="{'is-invalid': isForm1Submitted && frmRegistro.fr.errors}" placeholder="FR ">
+                <div *ngIf="isForm1Submitted && frmRegistro.fr.errors?.required" class="invalid-feedback">
+                  Required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="card-title text-primary">Motivo de la consulta</h4>
+              <quill-editor formControlName="motivoConsulta" placeholder="Motivo de la consulta" [modules]="quillConfig"
+                (onSelectionChanged)="onSelectionChanged($event)" (onContentChanged)="onContentChanged($event)">
+              </quill-editor>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 6%;">
+            <div class="col-md-12">
+              <h4 class="card-title text-primary">Diagnostico</h4>
+              <quill-editor formControlName="diagnostico" placeholder="Diagnostico" [modules]="quillConfig"
+                (onSelectionChanged)="onSelectionChanged($event)" (onContentChanged)="onContentChanged($event)">
+              </quill-editor>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 6%;">
+            <div class="col-md-12">
+              <h4 class="card-title text-primary">Laboratorios</h4>
+              <quill-editor formControlName="laboratorios" placeholder="Laboratorios" [modules]="quillConfig"
+                (onSelectionChanged)="onSelectionChanged($event)" (onContentChanged)="onContentChanged($event)">
+              </quill-editor>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 6%;">
+            <div class="col-md-12">
+              <h4 class="card-title text-primary">Tratamiento (Receta Medica)</h4>
+              <quill-editor formControlName="tratamiento" placeholder="Tratamiento (Receta Medica)"
+                [modules]="quillConfig" (onSelectionChanged)="onSelectionChanged($event)"
+                (onContentChanged)="onContentChanged($event)">
+              </quill-editor>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 6%;">
+            <div class="col-md-12">
+              <div *ngIf="this.editar=='true'">
+                <button  class="btn btn-primary" type="button"
+                  (click)="guardar()">Guardar</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

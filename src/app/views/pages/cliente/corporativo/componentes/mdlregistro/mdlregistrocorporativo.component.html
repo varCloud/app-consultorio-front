@@ -1,0 +1,165 @@
+<ng-template #modalRegistro let-modal>
+  <form (ngSubmit)="onGuardar(modal)" [formGroup]="formRegistro">
+    <div class="modal-header">
+      <h5 class="modal-title">{{tituloModal}}</h5>
+      <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="razonSocial">Razon Social*:</label>
+            <input type="text" class="form-control" formControlName="razonSocial" autocomplete="off" maxlength="50"
+              placeholder="razonSocial"
+              [ngClass]="{'is-invalid': frmRegistro.razonSocial.errors && frmRegistro.razonSocial.touched}">
+            <div *ngIf="frmRegistro.razonSocial.errors?.required && frmRegistro.razonSocial.touched" class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="rfc">Rfc*:</label>
+            <input type="text" class="form-control" formControlName="rfc" autocomplete="off" maxlength="50"
+              placeholder="Primer Apellido"
+              [ngClass]="{'is-invalid': frmRegistro.rfc.errors && frmRegistro.rfc.touched}">
+            <div *ngIf="frmRegistro.rfc.errors?.required && frmRegistro.rfc.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input type="text" class="form-control" formControlName="telefono" autocomplete="off" maxlength="50"
+              placeholder="Teléfono"
+              [ngClass]="{'is-invalid': frmRegistro.telefono.errors && frmRegistro.telefono.touched}">
+            <div *ngIf="frmRegistro.telefono.errors?.required && frmRegistro.telefono.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="correo">Correo</label>
+            <input type="text" class="form-control" formControlName="correo" autocomplete="off"
+              placeholder="Correo@mail.com" maxlength="50"
+              [ngClass]="{'is-invalid': frmRegistro.correo.errors && frmRegistro.correo.touched}">
+            <div *ngIf="frmRegistro.correo.errors?.required && frmRegistro.correo.touched" class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+            <div
+              *ngIf="frmRegistro.correo.invalid && !frmRegistro.correo.errors?.required && frmRegistro.correo.touched"
+              class="form-text text-danger">Ingrese un correo electrónico correcto</div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="codigoPostal">Código Postal*:</label>
+            <input type="text" class="form-control" formControlName="codigoPostal" autocomplete="off"
+              placeholder="Código Postal" [(ngModel)]="codigoPostal" (ngModelChange)='obtenerDireccionCP($event)' maxlength="5"
+              onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+              [ngClass]="{'is-invalid': frmRegistro.codigoPostal.errors && frmRegistro.codigoPostal.touched}">
+            <div *ngIf="frmRegistro.codigoPostal.errors?.required && frmRegistro.codigoPostal.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+            <div
+              *ngIf="frmRegistro.codigoPostal.invalid && !frmRegistro.codigoPostal.errors?.required && frmRegistro.codigoPostal.touched"
+              class="form-text text-danger">Ingrese un código postal completo</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="estado">Estado*:</label>
+            <input type="text" class="form-control" formControlName="estado" autocomplete="off" placeholder="Estado"
+              readonly [ngClass]="{'is-invalid': frmRegistro.estado.errors && frmRegistro.estado.touched}">
+            <!--<div *ngIf="frmRegistro.estado.errors?.required && frmRegistro.estado.touched" class="invalid-feedback">
+              Esta campo es requerido
+            </div>-->
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="municipio">Municipio o Alcaldía*:</label>
+            <input type="text" class="form-control" formControlName="municipio" autocomplete="off"
+              placeholder="Municipio o Alcaldía" readonly
+              [ngClass]="{'is-invalid': frmRegistro.municipio.errors && frmRegistro.municipio.touched}">
+            <!--<div *ngIf="frmRegistro.municipio.errors?.required && frmRegistro.municipio.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>-->
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="idColonia">Colonia*:</label>
+            <ng-select formControlName="idColonia" [closeOnSelect]="true"
+              [ngClass]="{'is-invalid': frmRegistro.idColonia.errors && frmRegistro.idColonia.touched}"
+              [placeholder]="'Seleccione una colonia'">
+              <ng-option *ngFor="let item of this.colonias" [value]="item.idColonia">{{item.colonia}}</ng-option>
+            </ng-select>
+            <div *ngIf="frmRegistro.idColonia.errors?.required && frmRegistro.idColonia.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="calle">Calle*:</label>
+            <input type="text" class="form-control" formControlName="calle" autocomplete="off" placeholder="Calle"
+              maxlength="100" [ngClass]="{'is-invalid': frmRegistro.calle.errors && frmRegistro.calle.touched}">
+            <div *ngIf="frmRegistro.calle.errors?.required && frmRegistro.calle.touched" class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="numeroExterior">Número exterior*:</label>
+            <input type="text" class="form-control" formControlName="numeroExterior" autocomplete="off" maxlength="20"
+              placeholder="Número exterior"
+              [ngClass]="{'is-invalid': frmRegistro.numeroExterior.errors && frmRegistro.numeroExterior.touched}">
+            <div *ngIf="frmRegistro.numeroExterior.errors?.required && frmRegistro.numeroExterior.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="numeroInterior">Número interior</label>
+            <input type="text" class="form-control" formControlName="numeroInterior" autocomplete="off" maxlength="20"
+              placeholder="Número interior"
+              [ngClass]="{'is-invalid': frmRegistro.numeroInterior.errors && frmRegistro.numeroInterior.touched}">
+            <div *ngIf="frmRegistro.numeroInterior.errors?.required && frmRegistro.numeroInterior.touched"
+              class="invalid-feedback">
+              Esta campo es requerido
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cancelar</button>
+      <button *ngIf="habilitarForm" type="submit" [disabled]="!formRegistro.valid" class="btn btn-primary">Aceptar</button>
+    </div>
+  </form>
+</ng-template>

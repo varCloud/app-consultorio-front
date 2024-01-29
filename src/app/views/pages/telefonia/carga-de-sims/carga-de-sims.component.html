@@ -1,0 +1,151 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Telefonia</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Carga de Sims</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Carga de sims</h4>
+                <p class="card-description mb-0">Administre los <a href="javascript:()"> </a>sims para sus usuarios.</p>
+                <!-- <button type="button" class="btn btn-primary float-right" (click)="onAbrirModalRegistro()">Cargar
+                    Sims</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="button" (click)="inputFile.click()" class="btn btn-primary btn-icon-text">
+                            <i class="feather icon-upload-cloud btn-icon-prepend"></i>
+                            Seleccionar Archivo
+                        </button>
+
+                        <input type="file" class="btn btn-secondary" #inputFile [hidden]="true"
+                            (change)="onSeleccionarArchivo($event)">
+                    </div>
+                </div>
+                <div *ngIf="this.dataExcel.length > 0" class="col-md-12 row">
+                    <div class="form-group col-md-3" >
+                        <label class="control-label"> <span>Archivo Seleccionado: </span> <span
+                                style="color: var(--primary);">{{this.archivoActual.name}}</span></label>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label for="exampleInputUsername1">Producto</label>
+                        <ng-select 
+                        [searchable]="false"
+                        [closeOnSelect]="true"
+                        [placeholder]="'Selecciona'"
+                        [(ngModel)]="this.idProducto"
+                        >
+                        <ng-option  [disabled]="true"  [value]="''" >Selecciona</ng-option> 
+                        <ng-option *ngFor="let item of this.lstProductos"  [value]="item.idProducto" >{{item.producto}}</ng-option> 
+                      </ng-select>
+                        
+                    </div>
+
+                    <div class="form-group" style="flex-direction: column; display: flex;">
+                        <label for="">&nbsp;</label>
+                        <button class="btn btn-secondary btn-icon-text" type="button" (click)="this.onGuardarSims()"> Guardar
+                            Sims   &nbsp;<i class="feather icon-save btn-icon-prepend"></i> </button>
+                    </div>
+
+                </div>
+                    
+                    <div class="table-responsive">
+                        <div class="item" *ngIf="this.loaderTable"></div>
+                        <div class="row d-flex flex-row-reverse">
+                            <div class="form-group col-sm-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Buscar" #filtro
+                                        (keyup)="updateFilter(filtro.value)" maxlength="30" />
+                                </div>
+                            </div>
+                        </div>
+    
+                        <ngx-datatable *ngIf="!this.loaderTable" class="bootstrap" [rows]="this.filteredData"
+                            [loadingIndicator]="true" [footerHeight]="50" [limit]="25" rowHeight="auto">
+
+                            <ngx-datatable-column name="Bussines entity"  prop="be_id"
+                                [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="IMSI" prop="imsi" [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="IMSI RB1"  prop="imsi_rb1" [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="IMSI RB2"  prop="imsi_rb2" [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="ICC " [width]="250"  prop="icc_id"
+                                [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="MSISDN "  prop="msisdn" [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="PIN " [width]="80"  prop="pin"
+                                [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="PUK "  prop="puk" [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="SERIE "  prop="serie" [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="PRODUCTO "  prop="product" [sortable]="false">
+                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                    {{value}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                        </ngx-datatable>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-mdl-registrar-sims-plantilla [AbrirModal]="model" (cerrarModal)="onCerrarModalRegistro($event)">
+</app-mdl-registrar-sims-plantilla>
