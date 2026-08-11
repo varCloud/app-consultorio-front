@@ -1,0 +1,96 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Commands
+
+Angular CLI 11 app. There is no local `ng` wrapper script, so use `npx ng`.
+
+```bash
+npm install                      # engines say Node 10.14.2 / npm 6.4.1, but see the note below
+npm run serve                    # dev server on http://localhost:4200
+npm run build                    # -> dist/ (dev config; aot: false)
+npm test                         # karma + jasmine (Chrome), watch mode
+npm run lint                     # tslint + codelyzer
+npm start                        # NOT a dev server — express (server.js) serving dist/ on PORT || 8888
+npx ng e2e                       # protractor
+```
+
+`serve`, `build` and `test` go through `cross-env NODE_OPTIONS=--openssl-legacy-provider`. Angular 11 ships webpack 4, which hashes with md4; on Node 17+ that fails with `ERR_OSSL_EVP_UNSUPPORTED`. Calling `npx ng build` directly bypasses the flag and hits that error — use the npm scripts. `lint` and `e2e` do not need it.
+
+A production build (`npx ng build --prod` plus the flag) turns on AOT and swaps in `environment.prod.ts`.
+
+Run a single unit test: karma has no name filter flag here — either narrow the `require.context` regex in [src/test.ts](src/test.ts), or use `fdescribe` / `fit` in the spec. Note the 8 `.spec.ts` files are unmodified CLI stubs; there is effectively no test suite.
+
+Deployment is Heroku (`git push heroku master`, see [README.md](README.md)); `server.js` is the Heroku web process and rewrites all paths to `dist/index.html`.
+
+The repo has a CodeGraph index (`.codegraph/`, 117 files / 1924 nodes). Prefer `codegraph_explore` over Grep/Read loops for structural questions and before edits.
+
+## Architecture
+
+### Two overlapping domains in one codebase
+
+This started as the **NobleUI** admin template wired to an **MVNO/telephony CRM** (SIMs, distributors, clients, sales reports) and was repurposed into a **medical consultorio** app (patients, medical notes, clinical history). Both code trees are still present and compiled.
+
+Only three routes are actually reachable from the UI, because [navegacion.service.ts](src/app/servicios/navegacion/navegacion.service.ts) `getNavigationItems()` unconditionally returns `menuRootMVNO`, which lists only Pacientes, Notas Médicas, Historial Médico. The other menu arrays (`menuAdministradorMVNO`, `menuOperador`, `menuSoporteTecnico`, `menuDistribubidor`) are dead code, and so are the `telefonia/`, `clientes/`, `usuarios/`, `reporteria/`, `dashboard/` feature modules they point at — the routes are registered in [app-routing.module.ts](src/app/app-routing.module.ts) but nothing navigates to them.
+
+**Before changing anything under `views/pages/`, check whether the feature is on the consultorio side (live) or the MVNO side (legacy).** Live: `pacientes`, `notas-medicas`, `historial-medico`, `perfil-doc`, `componentes-compartidos`, `auth`.
+
+### Layout and routing shell
+
+`AppComponent` → `BaseComponent` ([views/layout/base/](src/app/views/layout/base/)) is the authenticated shell (navbar + sidebar + footer) and the `canActivate: [AuthGuard]` boundary. Every feature is a lazy-loaded `NgModule` child of it with its own `*-routing.module.ts` using `RouterModule.forChild`. `auth` is the only module outside the shell.
+
+Exception: `UsuarioModule` is eagerly imported in `AppModule` *and* lazy-loaded via the router — an existing double-load, not a pattern to copy.
+
+### Session, auth, and the HTTP interceptor
+
+Session lives entirely in `localStorage`, mediated by [SesionService](src/app/utils/sesion.service.ts) with keys `sesion`, `sesionActiva`, `tokenWs`.
+
+[CifrarService](src/app/utils/Cifrar.service.ts) is the "encryption" layer, but `setEnc`/`getDec` **return early with plain `JSON.stringify`/`JSON.parse`** — the CryptoJS AES path below the `return` is unreachable. Values in localStorage are plaintext. `generarContrasena` (HmacSHA256) *is* live: the login form hashes the password client-side before POSTing.
+
+[InterceptorRediectService](src/app/core/http/interceptorRediect.service.ts) is registered as the single `HTTP_INTERCEPTORS` provider and handles all auth headers:
+- Header is `authorization-pp: Bearer-PP <token>` (not the standard `Authorization`).
+- URLs containing `usuario/login` are skipped entirely.
+- URLs containing `crm/` get `environment.apiKeyReporteria` instead of the session token.
+- `sim/registrarMasivoSim` gets the token without `Content-Type` (multipart upload).
+- Token older than `vigenciaToken` (60 min) or any `401` triggers `ActualizarToken()`, which **re-logs in using the credentials stored in the session object** and retries the request.
+
+`AuthGuard` only checks the `sesionActiva` localStorage flag.
+
+### API layer
+
+One service per backend controller under [src/app/servicios/](src/app/servicios/), each building `url = environment.baseurl + '<controller>/'` and exposing thin `httpClient.post(this.url + '<action>', data)` methods returning raw `Observable`s — no typing, no mapping, no error handling in the service. Components subscribe directly and handle everything.
+
+Two backends in [environments/](src/environments/): `baseurl` (main API, currently `https://crm-consultorio-api.onrender.com/`) and `baseurlReporteria` (legacy MVNO reporting, `http://localhost:3013/`).
+
+**Response envelope:** `{ estatus: 200, mensaje: string, modelo: any }`. Components branch on `data.estatus == 200` and read `data.modelo`. [login.component.ts](src/app/views/pages/auth/login/login.component.ts) reads `data.model` (no `o`) while the interceptor's refresh path reads `data.modelo.tokenWs` — these two disagree; verify against the API before touching login.
+
+### Cross-cutting utilities ([src/app/utils/](src/app/utils/))
+
+| Service | Role |
+| --- | --- |
+| `ToastService` | All user feedback. `mostrar(mensaje, EnumTipoToast.x)` → SweetAlert2 toast. Use this rather than raw `Swal`. |
+| `ObservableService` | Global `isLoading` `BehaviorSubject` driven by the interceptor's in-flight request counter. |
+| `NotaMedicaUtilsService` | Builds pdfmake document definitions for medical notes (html-to-pdfmake + jspdf/pdfmake). |
+| `ExportarInfoXlsService` | XLSX export via `xlsx` + `file-saver`. |
+| `ColoresService` | Badge/color mapping — MVNO enums only, legacy. |
+
+Enums live in [entidades/enumeraciones.ts](src/app/entidades/enumeraciones.ts) (all MVNO-domain); the consultorio side has no entity/model types — everything is `any`.
+
+## Conventions
+
+- Domain naming is Spanish (`servicios`, `entidades`, `pacientes`, `obtenerX`, `guardarX`); Angular/framework identifiers stay English. Backend endpoints are Spanish camelCase and sometimes carry typos that must be matched exactly (`obteneNotasMedicas`, `obtenerTiposHitoriasClinicas`).
+- Feature modules import their UI dependencies individually — there is no `SharedModule`. Copy the import list from a sibling module ([pacientes.module.ts](src/app/views/pages/pacientes/pacientes.module.ts) is representative: ngx-datatable, ng-select, ngx-mask, ng-bootstrap, archwizard, ngx-skeleton-loader, `FeahterIconModule`, `ComponentesCompartidosModule`).
+- `FeahterIconModule` ([core/feather-icon/](src/app/core/feather-icon/)) — the typo is in the real class name.
+- Modal components are prefixed `mdl-` and declared in the owning feature module.
+- Forms use `FormBuilder` reactive forms; tables use `@swimlane/ngx-datatable`.
+- Styles are SCSS (`schematics.style: scss`); global theme is [src/assets/scss/style.scss](src/assets/scss/style.scss) — a vendored NobleUI/Bootstrap 4 theme, not project code.
+- tslint config enforces single quotes, 140-char lines, `app` selector prefix, and `member-ordering`; the existing code violates it broadly, so `npm run lint` is noisy.
+
+## Gotchas
+
+- `aot: false` in the default build config — templates that break only under AOT will not surface until `--prod`.
+- `HashLocationStrategy` is imported in `AppModule` but never provided; routing is path-based, which is why `server.js` needs the catch-all rewrite.
+- `TokenService` is injected by the interceptor but is an empty stub.
+- `console.log` calls are left in production paths (guard, session, interceptor, base component).
+- `environment.prod.ts` hardcodes `baseurlReporteria: 'http://localhost:3013/'` and an API key — reporting is broken in production by construction.

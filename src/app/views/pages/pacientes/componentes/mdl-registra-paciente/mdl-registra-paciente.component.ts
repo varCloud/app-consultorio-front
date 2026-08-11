@@ -35,6 +35,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
   lstPregAntecedenPatologicos = []
   lstPregAntecedenGineco = []
   idPaciente = 0;
+  esDemo = false;
   /********************ejemplo wizar */
   validationFrmInformacionBasica: FormGroup;
   formAnteFamiliares: FormGroup;
@@ -79,6 +80,10 @@ export class MdlRegistraPacienteComponent implements OnInit {
     console.log("modelo:", this.modelo)
     this.tituloModal = this.modelo.tituloModal
     this.idPaciente = this.modelo.paciente.idPaciente
+    // El flag viene de la columna esDemo de usuarios: SP_VALIDAR_CONTRASENAS la
+    // devuelve en la fila del login y sesionService la guarda tal cual. Las
+    // sesiones abiertas antes del cambio no la traen y caen en modo normal.
+    this.esDemo = this.sesionService.getSesion()?.esDemo == 1;
     this.onInitForm();
 
 
@@ -212,20 +217,24 @@ export class MdlRegistraPacienteComponent implements OnInit {
   }
 
   onInitForm() {
+    // En modo demo solo el nombre sigue siendo obligatorio; el resto del alta se
+    // completa despues desde la edicion del paciente.
+    const requerido = this.esDemo ? [] : [Validators.required];
+
     this.formRegistro = this.formBuilder.group({
       idPaciente: [this.idPaciente],
       nombres: ['', Validators.required],
-      telefono: ['', Validators.required],
-      apellidoPaterno: ['', Validators.required],
+      telefono: ['', requerido],
+      apellidoPaterno: ['', requerido],
       apellidoMaterno: [''],
-      correo: ['', [Validators.required, Validators.email]],
+      correo: ['', this.esDemo ? [Validators.email] : [Validators.required, Validators.email]],
       edad: [''],
       fechaNacimiento: [''],
-      _fechaNacimiento: ['', Validators.required],
-      estadoCivil: ['', Validators.required],
-      residencia:['', Validators.required],
-      escolaridad:['', Validators.required],
-      ocupacion:['', Validators.required],
+      _fechaNacimiento: ['', requerido],
+      estadoCivil: ['', requerido],
+      residencia:['', requerido],
+      escolaridad:['', requerido],
+      ocupacion:['', requerido],
     });
 
 
@@ -271,7 +280,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
   clearFilter($e, pregunta: any) {
 
     console.log("event", $e.target.value, "controles pregunta", pregunta.controls)
-    if ($e.target.value == 'si') {
+    if ($e.target.value == 'si' && !this.esDemo) {
       pregunta.controls.descripcion.setValidators(Validators.required)
     } else {
       pregunta.controls.descripcion.clearValidators();
@@ -283,6 +292,9 @@ export class MdlRegistraPacienteComponent implements OnInit {
 
   construirPreguntas(data) {
 
+    // En demo tampoco se exige responder los antecedentes.
+    const requeridoPregunta = this.esDemo ? [] : Validators.required;
+
     this.lstPregAntecedenFamiliares = data.modelo.filter(x => x.idTipoHistoriaClinica == 1)
     //console.log(this.lstPregAntecedenFamiliares);
     this.lstPregAntecedenFamiliares.forEach(element => {
@@ -290,7 +302,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
         preguntaDesc: [element.descripcion],
         idPregunta: [element.idPregunta],
         descripcion: [element.descripcionRespuesta],
-        siNo: [element.respuestaRapida, Validators.required],
+        siNo: [element.respuestaRapida, requeridoPregunta],
         idRespuesta: [0]
       }));
     });
@@ -302,7 +314,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
         preguntaDesc: [element.descripcion],
         idPregunta: [element.idPregunta],
         descripcion: [element.descripcionRespuesta],
-        siNo: [element.respuestaRapida, Validators.required],
+        siNo: [element.respuestaRapida, requeridoPregunta],
         idRespuesta: [0]
 
       }));
@@ -316,7 +328,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
         preguntaDesc: [element.descripcion],
         idPregunta: [element.idPregunta],
         descripcion: [element.descripcionRespuesta],
-        siNo: [element.respuestaRapida, Validators.required],
+        siNo: [element.respuestaRapida, requeridoPregunta],
         idRespuesta: [0]
 
       }));
@@ -330,7 +342,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
         preguntaDesc: [element.descripcion],
         idPregunta: [element.idPregunta],
         descripcion: [element.descripcionRespuesta],
-        siNo: [element.respuestaRapida, Validators.required],
+        siNo: [element.respuestaRapida, requeridoPregunta],
         idRespuesta: [0]
 
       }));
@@ -356,8 +368,41 @@ export class MdlRegistraPacienteComponent implements OnInit {
     })
   }
 
+  /**
+   * En demo los campos opcionales llegan como cadena vacia. `edad` y
+   * `fechaNacimiento` viajan a columnas INT/DATE y el DAO los pasa al SP sin
+   * `|| null`, asi que un '' rompe el insert bajo strict SQL mode.
+   * Fuera de demo el payload se manda intacto.
+   */
+  private construirPayloadPaciente() {
+    const valores = this.formRegistro.value;
+    if (!this.esDemo) {
+      return valores;
+    }
+    const payload = {};
+    Object.keys(valores).forEach(campo => {
+      payload[campo] = valores[campo] === '' ? null : valores[campo];
+    });
+    return payload;
+  }
+
+  /**
+   * El DAO interpola estos valores directo en el CALL del SP, asi que un null
+   * se guardaria como el texto "null". Fuera de demo se manda intacto.
+   */
+  private normalizarPreguntas(preguntas: any[]) {
+    if (!this.esDemo) {
+      return preguntas;
+    }
+    return (preguntas || []).map(pregunta => ({
+      ...pregunta,
+      siNo: pregunta.siNo || 'no',
+      descripcion: pregunta.descripcion || ''
+    }));
+  }
+
   guardarPaciente() {
-    this.pacienteService.registrarPaciente(this.formRegistro.value).subscribe((data: any) => {
+    this.pacienteService.registrarPaciente(this.construirPayloadPaciente()).subscribe((data: any) => {
       if (data.estatus == 200) {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.success)
         this.idPaciente = data.modelo.idPaciente
@@ -373,7 +418,13 @@ export class MdlRegistraPacienteComponent implements OnInit {
 
   guardarRespuestaHistoriaClinica(form) {
 
-    this.pacienteService.guardarRespuestaHistoriaClinica({ ...form.value, idPaciente: this.idPaciente }).subscribe((data: any) => {
+    const postData = {
+      ...form.value,
+      preguntas: this.normalizarPreguntas(form.value.preguntas),
+      idPaciente: this.idPaciente
+    };
+
+    this.pacienteService.guardarRespuestaHistoriaClinica(postData).subscribe((data: any) => {
       if (data.estatus == 200) {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.success)
         this.wizardForm.goToNextStep();

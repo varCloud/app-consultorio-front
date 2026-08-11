@@ -49,3 +49,6 @@ Thumbs.db
 *.wmv
 
 .vscode/settings.json
+
+# CodeGraph local index
+.codegraph/
