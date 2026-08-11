@@ -50,10 +50,10 @@ Session lives entirely in `localStorage`, mediated by [SesionService](src/app/ut
 
 [InterceptorRediectService](src/app/core/http/interceptorRediect.service.ts) is registered as the single `HTTP_INTERCEPTORS` provider and handles all auth headers:
 - Header is `authorization-pp: Bearer-PP <token>` (not the standard `Authorization`).
-- URLs containing `usuario/login` are skipped entirely.
 - URLs containing `crm/` get `environment.apiKeyReporteria` instead of the session token.
+- `paciente/login` is skipped — that is the real login endpoint (`LoginService` posts to `paciente/`, not `usuario/`).
 - `sim/registrarMasivoSim` gets the token without `Content-Type` (multipart upload).
-- Token older than `vigenciaToken` (60 min) or any `401` triggers `ActualizarToken()`, which **re-logs in using the credentials stored in the session object** and retries the request.
+- **Token lifetime is the server's call.** The front does not track expiry: it attaches whatever token it has, and a `401` means end of session — `cerrarSesion()` plus a redirect to `/auth/login`. There is no silent token refresh. `crm/` and `paciente/login` are excluded from that rule, since neither uses the session.
 
 `AuthGuard` only checks the `sesionActiva` localStorage flag.
 
