@@ -154,6 +154,42 @@ export class MdlRegistraPacienteComponent implements OnInit {
     return (this.frmFamiliaresPreg.at(index) as FormGroup)
   }
 
+  get frmPersonales() {
+    return this.formAntePersonales.controls;
+  }
+
+  get frmPersonalesPreg() {
+    return this.frmPersonales.preguntas as FormArray;
+  }
+
+  getFrmPreguntaPersonales(index): FormGroup {
+    return (this.frmPersonalesPreg.at(index) as FormGroup)
+  }
+
+  get frmGineco() {
+    return this.formAnteGineco.controls;
+  }
+
+  get frmGinecoPreg() {
+    return this.frmGineco.preguntas as FormArray;
+  }
+
+  getFrmPreguntaGineco(index): FormGroup {
+    return (this.frmGinecoPreg.at(index) as FormGroup)
+  }
+
+  get frmPatologicos() {
+    return this.formAntePatologicos.controls;
+  }
+
+  get frmPatologicosPreg() {
+    return this.frmPatologicos.preguntas as FormArray;
+  }
+
+  getFrmPreguntaPatologicos(index): FormGroup {
+    return (this.frmPatologicosPreg.at(index) as FormGroup)
+  }
+
   /**
    * Go to next step while form value is valid
    */
