@@ -7,7 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Angular CLI 11 app. There is no local `ng` wrapper script, so use `npx ng`.
 
 ```bash
-npm install                      # engines say Node 10.14.2 / npm 6.4.1, but see the note below
+nvm use                          # Node 16 — see below, this is not optional
+npm install
 npm run serve                    # dev server on http://localhost:4200
 npm run build                    # -> dist/ (dev config; aot: false)
 npm test                         # karma + jasmine (Chrome), watch mode
@@ -16,7 +17,9 @@ npm start                        # NOT a dev server — express (server.js) serv
 npx ng e2e                       # protractor
 ```
 
-`serve`, `build` and `test` go through `cross-env NODE_OPTIONS=--openssl-legacy-provider`. Angular 11 ships webpack 4, which hashes with md4; on Node 17+ that fails with `ERR_OSSL_EVP_UNSUPPORTED`. Calling `npx ng build` directly bypasses the flag and hits that error — use the npm scripts. `lint` and `e2e` do not need it.
+**Node 16 is required** (pinned in [.nvmrc](.nvmrc)). Angular 11 ships webpack 4, which hashes with md4; Node 17+ rejects that under OpenSSL 3 with `ERR_OSSL_EVP_UNSUPPORTED`. The usual workaround is `NODE_OPTIONS=--openssl-legacy-provider`, but that flag **does not exist before Node 17**, so a build configured for it breaks on Node 16 with `--openssl-legacy-provider is not allowed in NODE_OPTIONS`. The two are mutually exclusive: pick the Node version, not the flag.
+
+A production build is `npx ng build --prod` (AOT + `environment.prod.ts`). It currently fails with 3 `TS2339` errors in `mdl-registra-paciente.component.html` — `FormArray.controls` accessed through `AbstractControl`. The same file already shows the fix (`getFrmPreguntaFam`, a getter that casts). Worth clearing: those 3 errors are the only thing between this app and an Ivy-ready build.
 
 A production build (`npx ng build --prod` plus the flag) turns on AOT and swaps in `environment.prod.ts`.
 
