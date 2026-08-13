@@ -7,19 +7,3 @@ export enum EnumTipoUsuario {
     Distribuidor = 5
 }
 
-export enum EnumAsignacionSim {
-    Todos = 0,
-    Disponible = 1,
-    Asignada = 2,
-}
-
-export enum EnumEstatusSim {
-    PorAsignar =1,
-    Asignada = 2,
-    Activa    ,
-    Suspendida,
-    Tansferida,
-    Inactiva,
-}
-
-

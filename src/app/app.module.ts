@@ -1,5 +1,4 @@
 import { ColorPickerModule } from 'ngx-color-picker';
-import { UsuarioModule } from './views/pages/usuario/usuario.module';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -40,7 +39,6 @@ registerLocaleData(es);
     LayoutModule,
     HttpClientModule,
     NgxDatatableModule,
-    UsuarioModule,
     NgxMaskModule.forRoot(),
     ColorPickerModule
 

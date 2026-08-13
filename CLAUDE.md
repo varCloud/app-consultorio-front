@@ -10,7 +10,7 @@ Angular CLI 11 app. There is no local `ng` wrapper script, so use `npx ng`.
 nvm use                          # Node 16 — see below, this is not optional
 npm install
 npm run serve                    # dev server on http://localhost:4200
-npm run build                    # -> dist/ (dev config; aot: false)
+npm run build                    # -> dist/ (dev config; aot: true)
 npm test                         # karma + jasmine (Chrome), watch mode
 npm run lint                     # tslint + codelyzer
 npm start                        # NOT a dev server — express (server.js) serving dist/ on PORT || 8888
@@ -19,11 +19,9 @@ npx ng e2e                       # protractor
 
 **Node 16 is required** (pinned in [.nvmrc](.nvmrc)). Angular 11 ships webpack 4, which hashes with md4; Node 17+ rejects that under OpenSSL 3 with `ERR_OSSL_EVP_UNSUPPORTED`. The usual workaround is `NODE_OPTIONS=--openssl-legacy-provider`, but that flag **does not exist before Node 17**, so a build configured for it breaks on Node 16 with `--openssl-legacy-provider is not allowed in NODE_OPTIONS`. The two are mutually exclusive: pick the Node version, not the flag.
 
-A production build is `npx ng build --prod` (AOT + `environment.prod.ts`). It currently fails with 3 `TS2339` errors in `mdl-registra-paciente.component.html` — `FormArray.controls` accessed through `AbstractControl`. The same file already shows the fix (`getFrmPreguntaFam`, a getter that casts). Worth clearing: those 3 errors are the only thing between this app and an Ivy-ready build.
+A production build is `npx ng build --prod` (AOT + `environment.prod.ts`, same AOT compiler the default `npm run build` now uses too). The wizard forms in `mdl-registra-paciente.component.ts/.html` use getter-based casts (`getFrmPreguntaFam`, `getFrmPreguntaPersonales`, `getFrmPreguntaGineco`, `getFrmPreguntaPatologicos`) to work around `FormArray.controls` not typechecking through `AbstractControl` — copy that pattern for any new nested-`FormArray` template.
 
-A production build (`npx ng build --prod` plus the flag) turns on AOT and swaps in `environment.prod.ts`.
-
-Run a single unit test: karma has no name filter flag here — either narrow the `require.context` regex in [src/test.ts](src/test.ts), or use `fdescribe` / `fit` in the spec. Note the 8 `.spec.ts` files are unmodified CLI stubs; there is effectively no test suite.
+Run a single unit test: karma has no name filter flag here — either narrow the `require.context` regex in [src/test.ts](src/test.ts), or use `fdescribe` / `fit` in the spec. Note the 7 `.spec.ts` files are unmodified CLI stubs (mostly failing with `NullInjectorError` for missing `RouterTestingModule`); there is effectively no test suite.
 
 Deployment is Heroku (`git push heroku master`, see [README.md](README.md)); `server.js` is the Heroku web process and rewrites all paths to `dist/index.html`.
 
@@ -31,19 +29,15 @@ The repo has a CodeGraph index (`.codegraph/`, 117 files / 1924 nodes). Prefer `
 
 ## Architecture
 
-### Two overlapping domains in one codebase
+### One domain now — the MVNO/telephony code was removed
 
-This started as the **NobleUI** admin template wired to an **MVNO/telephony CRM** (SIMs, distributors, clients, sales reports) and was repurposed into a **medical consultorio** app (patients, medical notes, clinical history). Both code trees are still present and compiled.
+This started as the **NobleUI** admin template wired to an **MVNO/telephony CRM** (SIMs, distributors, clients, sales reports) and was repurposed into a **medical consultorio** app (patients, medical notes, clinical history). The MVNO tree (`telefonia/`, `cliente/`, `usuario/` (the views module), `reporteria/`, `dashboard/` feature modules, their routes, `ColoresService`, the `EnumAsignacionSim`/`EnumEstatusSim` enums, and the dead menu arrays in `navegacion.service.ts`) was deleted as prep for the Angular version migration — it was never reachable from the UI in the first place ([navegacion.service.ts](src/app/servicios/navegacion/navegacion.service.ts) `getNavigationItems()` always returned only the consultorio menu). What remains is a single live domain: `pacientes`, `notas-medicas`, `historial-medico`, `perfil-doc`, `componentes-compartidos`, `auth`.
 
-Only three routes are actually reachable from the UI, because [navegacion.service.ts](src/app/servicios/navegacion/navegacion.service.ts) `getNavigationItems()` unconditionally returns `menuRootMVNO`, which lists only Pacientes, Notas Médicas, Historial Médico. The other menu arrays (`menuAdministradorMVNO`, `menuOperador`, `menuSoporteTecnico`, `menuDistribubidor`) are dead code, and so are the `telefonia/`, `clientes/`, `usuarios/`, `reporteria/`, `dashboard/` feature modules they point at — the routes are registered in [app-routing.module.ts](src/app/app-routing.module.ts) but nothing navigates to them.
-
-**Before changing anything under `views/pages/`, check whether the feature is on the consultorio side (live) or the MVNO side (legacy).** Live: `pacientes`, `notas-medicas`, `historial-medico`, `perfil-doc`, `componentes-compartidos`, `auth`.
+The app's default route (`{ path: '', redirectTo: ... }` in [app-routing.module.ts](src/app/app-routing.module.ts)) now points at `pacientes/paciente` — it used to redirect to the deleted MVNO dashboard module.
 
 ### Layout and routing shell
 
 `AppComponent` → `BaseComponent` ([views/layout/base/](src/app/views/layout/base/)) is the authenticated shell (navbar + sidebar + footer) and the `canActivate: [AuthGuard]` boundary. Every feature is a lazy-loaded `NgModule` child of it with its own `*-routing.module.ts` using `RouterModule.forChild`. `auth` is the only module outside the shell.
-
-Exception: `UsuarioModule` is eagerly imported in `AppModule` *and* lazy-loaded via the router — an existing double-load, not a pattern to copy.
 
 ### Session, auth, and the HTTP interceptor
 
@@ -64,7 +58,7 @@ Session lives entirely in `localStorage`, mediated by [SesionService](src/app/ut
 
 One service per backend controller under [src/app/servicios/](src/app/servicios/), each building `url = environment.baseurl + '<controller>/'` and exposing thin `httpClient.post(this.url + '<action>', data)` methods returning raw `Observable`s — no typing, no mapping, no error handling in the service. Components subscribe directly and handle everything.
 
-Two backends in [environments/](src/environments/): `baseurl` (main API, currently `https://crm-consultorio-api.onrender.com/`) and `baseurlReporteria` (legacy MVNO reporting, `http://localhost:3013/`).
+Two backends in [environments/](src/environments/): `baseurl` (main API, currently `https://crm-consultorio-api.onrender.com/`) and `baseurlReporteria` (was the legacy MVNO reporting backend; the `ReporteriaService` that used it was deleted along with the rest of the MVNO code, so this env var and the interceptor's `crm/`/`apiKeyReporteria` branch are now vestigial — safe to remove in a follow-up).
 
 **Response envelope:** `{ estatus: 200, mensaje: string, modelo: any }`. Components branch on `data.estatus == 200` and read `data.modelo`. [login.component.ts](src/app/views/pages/auth/login/login.component.ts) reads `data.model` (no `o`) while the interceptor's refresh path reads `data.modelo.tokenWs` — these two disagree; verify against the API before touching login.
 
@@ -75,10 +69,9 @@ Two backends in [environments/](src/environments/): `baseurl` (main API, current
 | `ToastService` | All user feedback. `mostrar(mensaje, EnumTipoToast.x)` → SweetAlert2 toast. Use this rather than raw `Swal`. |
 | `ObservableService` | Global `isLoading` `BehaviorSubject` driven by the interceptor's in-flight request counter. |
 | `NotaMedicaUtilsService` | Builds pdfmake document definitions for medical notes (html-to-pdfmake + jspdf/pdfmake). |
-| `ExportarInfoXlsService` | XLSX export via `xlsx` + `file-saver`. |
-| `ColoresService` | Badge/color mapping — MVNO enums only, legacy. |
+| `ExportarInfoXlsService` | XLSX export via `xlsx` + `file-saver`. Currently unused after the MVNO dashboard was deleted, but kept as general-purpose infra. |
 
-Enums live in [entidades/enumeraciones.ts](src/app/entidades/enumeraciones.ts) (all MVNO-domain); the consultorio side has no entity/model types — everything is `any`.
+[entidades/enumeraciones.ts](src/app/entidades/enumeraciones.ts) now only has `EnumTipoUsuario` (used live by `paciente`, `login`, `historial` components) — the MVNO-only enums were deleted. The consultorio side otherwise has no entity/model types — everything is `any`.
 
 ## Conventions
 
@@ -92,7 +85,6 @@ Enums live in [entidades/enumeraciones.ts](src/app/entidades/enumeraciones.ts) (
 
 ## Gotchas
 
-- `aot: false` in the default build config — templates that break only under AOT will not surface until `--prod`.
 - `HashLocationStrategy` is imported in `AppModule` but never provided; routing is path-based, which is why `server.js` needs the catch-all rewrite.
 - `TokenService` is injected by the interceptor but is an empty stub.
 - `console.log` calls are left in production paths (guard, session, interceptor, base component).
