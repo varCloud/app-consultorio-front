@@ -1,13 +1,13 @@
 
 // Booststrap functions and variables
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
 
 // Template variables
 @import './variables';
 
 // Bootstrap main SCSS
-@import '~bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/bootstrap.scss';
 
 // Template mixins
 @import './mixins/animation';
@@ -73,24 +73,21 @@
 @import "./components/email/email-compose";
 
 // Plugin styles
-@import '~perfect-scrollbar/css/perfect-scrollbar.css';
-@import "~highlight.js/styles/googlecode.css";
+@import 'perfect-scrollbar/css/perfect-scrollbar.css';
+@import "highlight.js/styles/googlecode.css";
 // @import url("//at.alicdn.com/t/font_o5hd5vvqpoqiwwmi.css"); //(feather-font). github https://github.com/AT-UI/feather-font
 @import "../fonts/feather/style.css";
-@import "~flag-icon-css/css/flag-icon.min.css";
-@import "~@mdi/font/css/materialdesignicons.min.css";
-@import '~animate.css/animate.min.css';
-@import '~@fullcalendar/common/main.min.css';
-@import '~@fullcalendar/daygrid/main.min.css';
-@import '~@fullcalendar/timegrid/main.min.css';
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import "~metismenujs/sass";
-@import '~quill/dist/quill.snow.css';
-@import '~angular-archwizard/archwizard.css';
-@import '~simple-datatables/dist/style.css';
-@import '~@swimlane/ngx-datatable/index.css';
-@import '~@swimlane/ngx-datatable/themes/bootstrap.css';
-@import '~@swimlane/ngx-datatable/assets/icons.css';
+@import "flag-icon-css/css/flag-icon.min.css";
+@import "@mdi/font/css/materialdesignicons.min.css";
+@import 'animate.css/animate.min.css';
+@import "@ng-select/ng-select/themes/default.theme.css";
+@import "metismenujs/sass";
+@import 'quill/dist/quill.snow.css';
+@import 'angular-archwizard/archwizard.css';
+@import 'simple-datatables/dist/style.css';
+@import '../../../node_modules/@swimlane/ngx-datatable/index.css';
+@import '../../../node_modules/@swimlane/ngx-datatable/themes/bootstrap.css';
+@import '../../../node_modules/@swimlane/ngx-datatable/assets/icons.css';
 
 
 // Plugin overrides
