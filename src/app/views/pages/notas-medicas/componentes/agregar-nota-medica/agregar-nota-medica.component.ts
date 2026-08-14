@@ -2,7 +2,7 @@ import { PacienteService } from './../../../../../servicios/paciente/paciente.se
 import { Router, RouterEvent, ActivatedRoute } from '@angular/router';
 import { NotasMedicasService } from '../../../../../servicios/notas-medicas/notas-medicas.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -16,7 +16,7 @@ import { NotaMedicaUtilsService } from 'src/app/utils/nota-medica-utils.service'
   styleUrls: ['./agregar-nota-medica.component.scss']
 })
 export class AgregarNotaMedicaComponent implements OnInit {
-  formRegistro: FormGroup;
+  formRegistro: UntypedFormGroup;
   isForm1Submitted = false;
   paciente?
   idPaciente: any
@@ -26,7 +26,7 @@ export class AgregarNotaMedicaComponent implements OnInit {
   editar;
   docDf2: any
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     private notasMedicasService: NotasMedicasService,
     private route: ActivatedRoute,
     private router: Router,

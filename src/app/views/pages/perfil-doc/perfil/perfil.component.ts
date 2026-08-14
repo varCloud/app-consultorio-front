@@ -1,7 +1,7 @@
 import { EnumTipoToast, ToastService } from 'src/app/utils/toast.service';
 import { UsuarioService } from 'src/app/servicios/usuario/usuario.service';
 import { SesionService } from 'src/app/utils/sesion.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -15,9 +15,9 @@ export class PerfilComponent implements OnInit {
   colorTextoDoctor = '#000000'
   colorTituloEncabezados = '#ffffff'
   colorCotenido = '#777777'
-  formPerfil: FormGroup
+  formPerfil: UntypedFormGroup
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public sesionService: SesionService,
     private usuarioService: UsuarioService,
     private toastService: ToastService

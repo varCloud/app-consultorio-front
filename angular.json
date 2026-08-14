@@ -131,7 +131,6 @@
       }
     }
   },
-  "defaultProject": "nobleui-angular",
   "cli": {
     "analytics": false
   }

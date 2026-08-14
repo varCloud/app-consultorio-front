@@ -4,7 +4,7 @@ import { SesionService } from 'src/app/utils/sesion.service';
 import { ToastService, EnumTipoToast } from 'src/app/utils/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LoginService } from 'src/app/servicios/login/login.service';
 
 @Component({
@@ -16,11 +16,11 @@ export class LoginComponent implements OnInit {
 
   submitform=false;
   returnUrl: any;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private loginService: LoginService,
     private toastService: ToastService,
     private sesionService: SesionService,

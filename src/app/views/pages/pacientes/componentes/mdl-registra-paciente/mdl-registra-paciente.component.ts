@@ -1,7 +1,7 @@
 
 import { PacienteService } from './../../../../../servicios/paciente/paciente.service';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormArray } from '@angular/forms';
 import { NgbModal, NgbDateStruct, NgbInputDatepickerConfig, NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { CatalogoService } from 'src/app/servicios/catalogo/catalogo.service';
 import { UsuarioService } from 'src/app/servicios/usuario/usuario.service';
@@ -22,7 +22,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
   @Input() public modelo;
   @Output() cerrarModal = new EventEmitter<any>();
 
-  formRegistro: FormGroup;
+  formRegistro: UntypedFormGroup;
   tiposUsuarios = [];
   lstMvnos = [];
   esAdministrador = false;
@@ -37,12 +37,12 @@ export class MdlRegistraPacienteComponent implements OnInit {
   idPaciente = 0;
   esDemo = false;
   /********************ejemplo wizar */
-  validationFrmInformacionBasica: FormGroup;
-  formAnteFamiliares: FormGroup;
-  formAntePersonales: FormGroup;
-  formAntePatologicos: FormGroup;
-  formAnteGineco: FormGroup;
-  validationForm2: FormGroup;
+  validationFrmInformacionBasica: UntypedFormGroup;
+  formAnteFamiliares: UntypedFormGroup;
+  formAntePersonales: UntypedFormGroup;
+  formAntePatologicos: UntypedFormGroup;
+  formAnteGineco: UntypedFormGroup;
+  validationForm2: UntypedFormGroup;
 
   isForm1Submitted: Boolean;
   isForm2Submitted: Boolean;
@@ -54,7 +54,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     private toast: ToastService,
     private catalogoService: CatalogoService,
     public sesionService: SesionService,
@@ -97,28 +97,28 @@ export class MdlRegistraPacienteComponent implements OnInit {
      * form Antecedentes Familiares
      */
     this.formAnteFamiliares = this.formBuilder.group({
-      preguntas: new FormArray([])
+      preguntas: new UntypedFormArray([])
     });
 
     /**
     * form Antecedentes Personales
     */
     this.formAntePersonales = this.formBuilder.group({
-      preguntas: new FormArray([])
+      preguntas: new UntypedFormArray([])
     });
 
     /**
     * form Antecedentes Patologicos
     */
     this.formAntePatologicos = this.formBuilder.group({
-      preguntas: new FormArray([])
+      preguntas: new UntypedFormArray([])
     });
 
     /**
     * form Antecedes Gineco-Obstétricos
     */
     this.formAnteGineco = this.formBuilder.group({
-      preguntas: new FormArray([])
+      preguntas: new UntypedFormArray([])
     });
 
     this.isForm1Submitted = false;
@@ -147,11 +147,11 @@ export class MdlRegistraPacienteComponent implements OnInit {
   }
 
   get frmFamiliaresPreg() {
-    return this.frmFamiliares.preguntas as FormArray;
+    return this.frmFamiliares.preguntas as UntypedFormArray;
   }
 
-  getFrmPreguntaFam(index) :  FormGroup{
-    return (this.frmFamiliaresPreg.at(index) as FormGroup)
+  getFrmPreguntaFam(index) :  UntypedFormGroup{
+    return (this.frmFamiliaresPreg.at(index) as UntypedFormGroup)
   }
 
   get frmPersonales() {
@@ -159,11 +159,11 @@ export class MdlRegistraPacienteComponent implements OnInit {
   }
 
   get frmPersonalesPreg() {
-    return this.frmPersonales.preguntas as FormArray;
+    return this.frmPersonales.preguntas as UntypedFormArray;
   }
 
-  getFrmPreguntaPersonales(index): FormGroup {
-    return (this.frmPersonalesPreg.at(index) as FormGroup)
+  getFrmPreguntaPersonales(index): UntypedFormGroup {
+    return (this.frmPersonalesPreg.at(index) as UntypedFormGroup)
   }
 
   get frmGineco() {
@@ -171,11 +171,11 @@ export class MdlRegistraPacienteComponent implements OnInit {
   }
 
   get frmGinecoPreg() {
-    return this.frmGineco.preguntas as FormArray;
+    return this.frmGineco.preguntas as UntypedFormArray;
   }
 
-  getFrmPreguntaGineco(index): FormGroup {
-    return (this.frmGinecoPreg.at(index) as FormGroup)
+  getFrmPreguntaGineco(index): UntypedFormGroup {
+    return (this.frmGinecoPreg.at(index) as UntypedFormGroup)
   }
 
   get frmPatologicos() {
@@ -183,11 +183,11 @@ export class MdlRegistraPacienteComponent implements OnInit {
   }
 
   get frmPatologicosPreg() {
-    return this.frmPatologicos.preguntas as FormArray;
+    return this.frmPatologicos.preguntas as UntypedFormArray;
   }
 
-  getFrmPreguntaPatologicos(index): FormGroup {
-    return (this.frmPatologicosPreg.at(index) as FormGroup)
+  getFrmPreguntaPatologicos(index): UntypedFormGroup {
+    return (this.frmPatologicosPreg.at(index) as UntypedFormGroup)
   }
 
   /**
@@ -346,7 +346,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
     this.lstPregAntecedenPersonales = data.modelo.filter(x => x.idTipoHistoriaClinica == 2)
     //console.log(this.lstPregAntecedenPersonales);
     this.lstPregAntecedenPersonales.forEach(element => {
-      (this.formAntePersonales.controls.preguntas as FormArray).push(this.formBuilder.group({
+      (this.formAntePersonales.controls.preguntas as UntypedFormArray).push(this.formBuilder.group({
         preguntaDesc: [element.descripcion],
         idPregunta: [element.idPregunta],
         descripcion: [element.descripcionRespuesta],
@@ -360,7 +360,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
     this.lstPregAntecedenPatologicos = data.modelo.filter(x => x.idTipoHistoriaClinica == 3)
     //console.log(this.lstPregAntecedenPatologicos);
     this.lstPregAntecedenPatologicos.forEach(element => {
-      (this.formAntePatologicos.controls.preguntas as FormArray).push(this.formBuilder.group({
+      (this.formAntePatologicos.controls.preguntas as UntypedFormArray).push(this.formBuilder.group({
         preguntaDesc: [element.descripcion],
         idPregunta: [element.idPregunta],
         descripcion: [element.descripcionRespuesta],
@@ -374,7 +374,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
     this.lstPregAntecedenGineco = data.modelo.filter(x => x.idTipoHistoriaClinica == 4)
     //console.log(this.lstPregAntecedenGineco);
     this.lstPregAntecedenGineco.forEach(element => {
-      (this.formAnteGineco.controls.preguntas as FormArray).push(this.formBuilder.group({
+      (this.formAnteGineco.controls.preguntas as UntypedFormArray).push(this.formBuilder.group({
         preguntaDesc: [element.descripcion],
         idPregunta: [element.idPregunta],
         descripcion: [element.descripcionRespuesta],
