@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
         if (data.estatus == 200) {
           this.sesionService.setSesion(data.model)
           if (this.sesionService.sesionActiva) {
-            this.router.navigate(["dashboard"]);
+            this.router.navigate([this.returnUrl]);
           }
         } else {
           this.form.controls.contrasena.setValue('')
