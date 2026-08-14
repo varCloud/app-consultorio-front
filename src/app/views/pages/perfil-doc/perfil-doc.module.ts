@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 import { PerfilDocRoutingModule } from './perfil-doc-routing.module';
 import { PerfilComponent } from './perfil/perfil.component';
-import { CustomFormsModule } from 'ngx-custom-validators';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { NgbAlertModule, NgbDatepickerModule, NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -24,7 +23,6 @@ import { ComponentesCompartidosModule } from '../componentes-compartidos/compone
     FormsModule,
     ReactiveFormsModule,
     ColorPickerModule,
-    CustomFormsModule,
     NgbAlertModule,
     NgxDatatableModule,
     NgxSkeletonLoaderModule,
