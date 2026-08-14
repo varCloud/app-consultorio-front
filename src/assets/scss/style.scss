@@ -79,16 +79,12 @@
 @import "../fonts/feather/style.css";
 @import "~flag-icon-css/css/flag-icon.min.css";
 @import "~@mdi/font/css/materialdesignicons.min.css";
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 @import '~animate.css/animate.min.css';
 @import '~@fullcalendar/common/main.min.css';
 @import '~@fullcalendar/daygrid/main.min.css';
 @import '~@fullcalendar/timegrid/main.min.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
-@import '~simplemde/dist/simplemde.min.css';
 @import "~metismenujs/scss/metismenujs";
-@import '~dropzone/dist/min/dropzone.min.css';
 @import '~quill/dist/quill.snow.css';
 @import '~angular-archwizard/archwizard.css';
 @import '~simple-datatables/dist/style.css';
@@ -100,14 +96,10 @@
 // Plugin overrides
 @import "./components/plugin-overrides/full-calendar";
 @import "./components/plugin-overrides/ng-select";
-@import "./components/plugin-overrides/ngx-chips";
 @import "./components/plugin-overrides/ngx-quill";
 @import "./components/plugin-overrides/perfect-scrollbar";
-@import "./components/plugin-overrides/simplemde";
 @import "./components/plugin-overrides/sweet-alert";
-@import "./components/plugin-overrides/dropzone";
 @import "./components/plugin-overrides/angular-archwizard";
-@import "./components/plugin-overrides/apex-charts";
 @import "./components/plugin-overrides/data-tables";
 @import "./components/plugin-overrides/ngx-datatable";
 

@@ -35,7 +35,6 @@
 
             ],
             "scripts": [
-              "node_modules/apexcharts/dist/apexcharts.min.js",
               "node_modules/crypto-js/crypto-js.js"
             ]
           },
