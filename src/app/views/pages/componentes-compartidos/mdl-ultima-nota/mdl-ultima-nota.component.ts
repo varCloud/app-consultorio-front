@@ -6,7 +6,7 @@ import { PacienteService } from 'src/app/servicios/paciente/paciente.service';
 import jsPDF from 'jspdf';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.vfs = pdfFonts;
 
 
 @Component({

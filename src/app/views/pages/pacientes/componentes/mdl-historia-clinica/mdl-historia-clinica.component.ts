@@ -4,7 +4,7 @@ import { ToastService, EnumTipoToast } from 'src/app/utils/toast.service';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { NotaMedicaUtilsService } from 'src/app/utils/nota-medica-utils.service';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.vfs = pdfFonts;
 
 @Component({
   selector: 'app-mdl-historia-clinica',
