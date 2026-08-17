@@ -293,6 +293,7 @@
     position: relative;
     border-right: 1px solid $sidebar-light-border-color;
     height: 100%;
+    overflow-y: auto;
     -webkit-box-shadow: 0 8px 10px 0 rgba(183,192,206,.2);
             box-shadow: 0 8px 10px 0 rgba(183,192,206,.2); 
     background: $sidebar-light-bg;     

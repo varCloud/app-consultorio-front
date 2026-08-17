@@ -8,10 +8,9 @@ import { HistorialComponent } from './historial/historial.component';
 import { NgbDatepickerModule, NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { FeahterIconModule } from 'src/app/core/feather-icon/feather-icon.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { ArchwizardModule } from 'angular-archwizard';
 import { ComponentesCompartidosModule } from '../componentes-compartidos/componentes-compartidos.module';
 
 
@@ -25,15 +24,16 @@ import { ComponentesCompartidosModule } from '../componentes-compartidos/compone
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxMaskModule.forRoot({ validation: true}),
+    NgxMaskDirective,
     NgbDropdownModule,
-    ArchwizardModule,
-    NgxMaskModule.forRoot(),
     NgbDatepickerModule,
     FeahterIconModule,
     NgbTooltipModule,
     FeahterIconModule,
     ComponentesCompartidosModule
+  ],
+  providers: [
+    provideNgxMask({ validation: true })
   ]
 })
 export class HistorialMedicoModule { }

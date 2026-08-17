@@ -1,15 +1,12 @@
 
 import { PacienteService } from './../../../../../servicios/paciente/paciente.service';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormArray } from '@angular/forms';
 import { NgbModal, NgbDateStruct, NgbInputDatepickerConfig, NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { CatalogoService } from 'src/app/servicios/catalogo/catalogo.service';
 import { UsuarioService } from 'src/app/servicios/usuario/usuario.service';
 import { SesionService } from 'src/app/utils/sesion.service';
 import { ToastService, EnumTipoToast } from 'src/app/utils/toast.service';
-import { WizardComponent as BaseWizardComponent } from 'angular-archwizard';
-
-
 
 @Component({
   selector: 'app-mdl-registra-paciente',
@@ -18,7 +15,16 @@ import { WizardComponent as BaseWizardComponent } from 'angular-archwizard';
 })
 export class MdlRegistraPacienteComponent implements OnInit {
 
-  @ViewChild('wizardForm') wizardForm: BaseWizardComponent;
+  pasosWizard = [
+    'Datos Generales',
+    'Antecedentes Personales no Patológicos',
+    'Antecedes Gineco-Obstétricos',
+    'Antecedentes familiares',
+    'Antecedentes Patológicos',
+    'Registro Completo'
+  ];
+  pasoActual = 0;
+
   @Input() public modelo;
   @Output() cerrarModal = new EventEmitter<any>();
 
@@ -133,6 +139,18 @@ export class MdlRegistraPacienteComponent implements OnInit {
    */
   finishFunction() {
     this.modelo.modal.close({ cerrar: "cerrar" })
+  }
+
+  pasoSiguiente() {
+    if (this.pasoActual < this.pasosWizard.length - 1) {
+      this.pasoActual++;
+    }
+  }
+
+  pasoAnterior() {
+    if (this.pasoActual > 0) {
+      this.pasoActual--;
+    }
   }
 
   get form2() {
@@ -443,7 +461,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.success)
         this.idPaciente = data.modelo.idPaciente
         this.formRegistro.controls.idPaciente.setValue(this.idPaciente)
-        this.wizardForm.goToNextStep();
+        this.pasoSiguiente();
       } else {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.info)
       }
@@ -463,7 +481,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
     this.pacienteService.guardarRespuestaHistoriaClinica(postData).subscribe((data: any) => {
       if (data.estatus == 200) {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.success)
-        this.wizardForm.goToNextStep();
+        this.pasoSiguiente();
       } else {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.info)
       }

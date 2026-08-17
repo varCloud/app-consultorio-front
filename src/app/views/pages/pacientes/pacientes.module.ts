@@ -11,11 +11,9 @@ import { PacientesRoutingModule } from './pacientes-routing.module';
 import { PacienteComponent } from './paciente/paciente.component';
 import { TablaUsuariosComponent } from './componentes/tabla-usuarios/tabla-usuarios.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { MdlRegistraPacienteComponent } from './componentes/mdl-registra-paciente/mdl-registra-paciente.component';
 
-// angular-archwizard
-import { ArchwizardModule } from 'angular-archwizard';
 import { FeahterIconModule } from 'src/app/core/feather-icon/feather-icon.module';
 import { MdlHistoriaClinicaComponent } from './componentes/mdl-historia-clinica/mdl-historia-clinica.component';
 
@@ -29,10 +27,8 @@ import { MdlHistoriaClinicaComponent } from './componentes/mdl-historia-clinica/
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxMaskModule.forRoot({ validation: true}),
+    NgxMaskDirective,
     NgbDropdownModule,
-    ArchwizardModule,
-    NgxMaskModule.forRoot(),
     NgbDatepickerModule,
     FeahterIconModule,
     NgbTooltipModule,
@@ -40,6 +36,9 @@ import { MdlHistoriaClinicaComponent } from './componentes/mdl-historia-clinica/
     NgbAlertModule,
     ColorPickerModule
 
+  ],
+  providers: [
+    provideNgxMask({ validation: true })
   ]
 })
 export class PacientesModule { }
