@@ -4,20 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Angular CLI 19 app (incrementally migrated from 11; see [.claude memory]/project history for the per-major bump log). There is no local `ng` wrapper script, so use `npx ng`.
+Angular CLI 20 app (incrementally migrated from 11; see [.claude memory]/project history for the per-major bump log). There is no local `ng` wrapper script, so use `npx ng`.
 
 ```bash
-nvm use                          # Node 18.20.4 (see .nvmrc) — see below
-npm install
+nvm use                          # Node 20.19.6 (see .nvmrc) — see below
+npm install                      # needs --legacy-peer-deps: ngx-currency@19.0.0's peerDependencies still cap @angular/core at ^19, stale but harmless (builds/tests/runs clean on 20)
 npm run serve                    # dev server on http://localhost:4200
 npm run build                    # -> dist/ (dev config; aot: true)
 npm test                         # karma + jasmine (Chrome), watch mode
 npm run lint                     # BROKEN: @angular-devkit/build-angular no longer ships a tslint builder (removed upstream years ago); errors with "Cannot find builder"
 npm start                        # NOT a dev server — express (server.js) serving dist/ on PORT || 8888
-npx ng e2e                       # protractor
+npx ng e2e                       # protractor (legacy, unmaintained — prefer Cypress below for any new browser verification)
+npx cypress run                  # Cypress smoke tests (cypress/e2e/smoke.cy.ts) — mocks the API envelope and localStorage session to get past AuthGuard without real credentials
 ```
 
-**Node ^18.19.1, ^20.11.1, or >=22.0.0 is required** (`engines` in [package.json](package.json); pinned to 18.20.4 in [.nvmrc](.nvmrc)) — Angular 18 raised the floor from the 18.13.0/20.9.0 that Angular 17 accepted. The old Node 16 pin and the webpack4/md4/`ERR_OSSL_EVP_UNSUPPORTED`/`--openssl-legacy-provider` constraint documented here previously no longer apply — they were specific to the Angular 11-12 builder and were already moot by the time the app reached Angular 16/17. If your machine doesn't have 18.20.4 installed via nvm, any Node satisfying the `engines` range above (e.g. 20.19.x) works fine too.
+**Node `^20.19.0 || ^22.12.0 || >=24.0.0` is required** (`engines` in [package.json](package.json); pinned to 20.19.6 in [.nvmrc](.nvmrc)) — Angular 20 raised the floor from the 18.19.1/20.11.1/22.0.0 that Angular 18-19 accepted (Node 18 no longer satisfies any released Angular's floor as of this bump). The old Node 16 pin and the webpack4/md4/`ERR_OSSL_EVP_UNSUPPORTED`/`--openssl-legacy-provider` constraint documented here previously no longer apply — they were specific to the Angular 11-12 builder and were already moot by the time the app reached Angular 16/17.
+
+**Cypress, not Playwright, is this project's browser-automation tool** for any future ad-hoc UI verification — Playwright caused enough friction in this environment that it's off the table. One environment-specific gotcha if Cypress (or any other Electron-based tool) refuses to launch with a `bad option: --smoke-test` error and `--version` prints a bare Node version instead of the tool's own version: check for `$env:ELECTRON_RUN_AS_NODE` — if set, it forces every Electron.exe to run as plain Node instead of the packaged app. Clear it (`$env:ELECTRON_RUN_AS_NODE = $null` in the same PowerShell invocation) before running Cypress. This doesn't affect Playwright, which drives Chromium/Firefox/WebKit binaries directly rather than through Electron.
 
 A production build is `npx ng build --configuration production` (AOT + `environment.prod.ts`, same AOT compiler the default `npm run build` now uses too). The `--prod` alias was removed in Angular 14 (`ng build --prod` now errors with `Unknown argument: prod`) — use `--configuration production` instead. The wizard forms in `mdl-registra-paciente.component.ts/.html` use getter-based casts (`getFrmPreguntaFam`, `getFrmPreguntaPersonales`, `getFrmPreguntaGineco`, `getFrmPreguntaPatologicos`) to work around `FormArray.controls` not typechecking through `AbstractControl` — copy that pattern for any new nested-`FormArray` template.
 

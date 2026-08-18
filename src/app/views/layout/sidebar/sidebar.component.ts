@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Renderer2, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Renderer2, Inject, DOCUMENT } from '@angular/core';
+
 
 import MetisMenu from 'metismenujs';
 
