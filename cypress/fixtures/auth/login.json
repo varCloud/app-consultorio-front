@@ -1,0 +1,10 @@
+{
+  "selectors": {
+    "usuario": "#txtUsuario",
+    "contrasena": "#txtContrasena",
+    "submit": "button[type=\"submit\"]"
+  },
+  "routes": {
+    "login": "/auth/login"
+  }
+}

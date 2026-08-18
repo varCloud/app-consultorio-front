@@ -86,6 +86,14 @@
     "crypto": false
   },
   "overrides": {
-    "@babel/plugin-transform-regenerator": "7.12.1"
+    "@babel/plugin-transform-regenerator": "7.12.1",
+    "ngx-currency": {
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core",
+      "@angular/forms": "$@angular/forms"
+    },
+    "ngx-quill": {
+      "@angular/core": "$@angular/core"
+    }
   }
 }

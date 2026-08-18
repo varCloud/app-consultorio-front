@@ -1,0 +1,8 @@
+{
+  "routes": {
+    "perfil": "/perfil-doc/perfil"
+  },
+  "selectors": {
+    "btnGuardar": "button"
+  }
+}

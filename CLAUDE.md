@@ -2,6 +2,16 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Reglas del proyecto
+
+Reglas específicas, mantenidas por separado de este archivo:
+
+@.claude/rules/testing.md
+@.claude/rules/e2e-nuevos-modulos.md
+@.claude/rules/modelos-e-interfaces.md
+@.claude/rules/constantes.md
+@.claude/rules/clean-code.md
+
 ## Commands
 
 Angular CLI 20 app (incrementally migrated from 11; see [.claude memory]/project history for the per-major bump log). There is no local `ng` wrapper script, so use `npx ng`.
@@ -15,7 +25,7 @@ npm test                         # karma + jasmine (Chrome), watch mode
 npm run lint                     # BROKEN: @angular-devkit/build-angular no longer ships a tslint builder (removed upstream years ago); errors with "Cannot find builder"
 npm start                        # NOT a dev server — express (server.js) serving dist/ on PORT || 8888
 npx ng e2e                       # protractor (legacy, unmaintained — prefer Cypress below for any new browser verification)
-npx cypress run                  # Cypress smoke tests (cypress/e2e/smoke.cy.ts) — mocks the API envelope and localStorage session to get past AuthGuard without real credentials
+npx cypress run                  # e2e suite, one folder per module under cypress/e2e/ (auth, pacientes, notas-medicas, historial-medico, perfil-doc) — see .claude/rules/testing.md for the per-screen test budget and priorities. Reusable steps live in cypress/support/commands/, selectors/mock data in cypress/fixtures/. Mocks the API envelope and localStorage session to get past AuthGuard without real credentials.
 ```
 
 **Node `^20.19.0 || ^22.12.0 || >=24.0.0` is required** (`engines` in [package.json](package.json); pinned to 20.19.6 in [.nvmrc](.nvmrc)) — Angular 20 raised the floor from the 18.19.1/20.11.1/22.0.0 that Angular 18-19 accepted (Node 18 no longer satisfies any released Angular's floor as of this bump). The old Node 16 pin and the webpack4/md4/`ERR_OSSL_EVP_UNSUPPORTED`/`--openssl-legacy-provider` constraint documented here previously no longer apply — they were specific to the Angular 11-12 builder and were already moot by the time the app reached Angular 16/17.

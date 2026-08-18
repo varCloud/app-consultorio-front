@@ -16,7 +16,7 @@ export class CatalogoService {
   }
 
   obtenerTiposHitoriasClinicas(data: any) {
-    return this.httpClient.get(this.url + 'obtenerTiposHitoriasClinicas');
+    return this.httpClient.post(this.url + 'obtenerTiposHitoriasClinicas', data);
   }
 
 

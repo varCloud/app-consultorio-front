@@ -1,0 +1,25 @@
+{
+  "routes": {
+    "agregarNota": "/notas/agregar-nota",
+    "notas": "/notas/notas"
+  },
+  "selectors": {
+    "campos": {
+      "peso": "#peso",
+      "talla": "#talla",
+      "temperatura": "#temperatura",
+      "saturacion": "#saturacion",
+      "ta": "#ta",
+      "fc": "#fc",
+      "fr": "#fr"
+    },
+    "editores": {
+      "motivoConsulta": "quill-editor[formcontrolname=\"motivoConsulta\"] .ql-editor",
+      "diagnostico": "quill-editor[formcontrolname=\"diagnostico\"] .ql-editor",
+      "laboratorios": "quill-editor[formcontrolname=\"laboratorios\"] .ql-editor",
+      "tratamiento": "quill-editor[formcontrolname=\"tratamiento\"] .ql-editor"
+    },
+    "btnGuardar": "button",
+    "invalidFeedback": ".invalid-feedback"
+  }
+}

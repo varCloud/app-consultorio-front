@@ -25,6 +25,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
     'Registro Completo'
   ];
   pasoActual = 0;
+  pasoRegistroCompleto = 5;
 
   @Input() public modelo;
   @Output() cerrarModal = new EventEmitter<any>();
@@ -41,14 +42,18 @@ export class MdlRegistraPacienteComponent implements OnInit {
   lstPregAntecedenPersonales = []
   lstPregAntecedenPatologicos = []
   lstPregAntecedenGineco = []
+  lstPregAntecedenDental = []
   idPaciente = 0;
   esDemo = false;
+  esDentista = false;
+  idTipoHistoriaClinicaDental = null;
   /********************ejemplo wizar */
   validationFrmInformacionBasica: UntypedFormGroup;
   formAnteFamiliares: UntypedFormGroup;
   formAntePersonales: UntypedFormGroup;
   formAntePatologicos: UntypedFormGroup;
   formAnteGineco: UntypedFormGroup;
+  formAnteDental: UntypedFormGroup;
   validationForm2: UntypedFormGroup;
 
   isForm1Submitted: Boolean;
@@ -57,6 +62,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
   isFormAntePersonalesSubmitted: Boolean;
   isFormAntePatologicosSubmitted: Boolean;
   isFormAnteGinecoSubmitted: Boolean;
+  isFormAnteDentalSubmitted: Boolean;
   /********************ejemplo wizar */
 
   constructor(
@@ -128,12 +134,20 @@ export class MdlRegistraPacienteComponent implements OnInit {
       preguntas: new UntypedFormArray([])
     });
 
+    /**
+    * form Antecedentes Dental
+    */
+    this.formAnteDental = this.formBuilder.group({
+      preguntas: new UntypedFormArray([])
+    });
+
     this.isForm1Submitted = false;
     this.isForm2Submitted = false;
     this.isFormAntecedenFamSubmitted = false;
     this.isFormAntePersonalesSubmitted = false;
     this.isFormAntePatologicosSubmitted = false;
     this.isFormAnteGinecoSubmitted = false;
+    this.isFormAnteDentalSubmitted = false;
   }
   /**
    * Wizard finish function
@@ -209,6 +223,18 @@ export class MdlRegistraPacienteComponent implements OnInit {
     return (this.frmPatologicosPreg.at(index) as UntypedFormGroup)
   }
 
+  get frmDental() {
+    return this.formAnteDental.controls;
+  }
+
+  get frmDentalPreg() {
+    return this.frmDental.preguntas as UntypedFormArray;
+  }
+
+  getFrmPreguntaDental(index): UntypedFormGroup {
+    return (this.frmDentalPreg.at(index) as UntypedFormGroup)
+  }
+
   /**
    * Go to next step while form value is valid
    */
@@ -255,6 +281,14 @@ export class MdlRegistraPacienteComponent implements OnInit {
       this.guardarRespuestaHistoriaClinica(this.formAnteGineco)
     }
     this.isFormAnteGinecoSubmitted = true;
+  }
+
+  submitAntecedentesDental() {
+    //console.log("data submitAntecedentesDental", this.formAnteDental.controls.preguntas.value, "valido", this.formAnteDental.valid)
+    if (this.formAnteDental.valid) {
+      this.guardarRespuestaHistoriaClinica(this.formAnteDental)
+    }
+    this.isFormAnteDentalSubmitted = true;
   }
 
   onDateSelected(ngbDatepicker) {
@@ -320,7 +354,7 @@ export class MdlRegistraPacienteComponent implements OnInit {
     }
 
     //this.onDateSelected();
-    this.obtenerPreguntasRespuestasXPaciente();
+    this.obtenerTiposHistoriaClinica();
   }
 
   get frmRegistro() {
@@ -403,12 +437,45 @@ export class MdlRegistraPacienteComponent implements OnInit {
       }));
     });
 
+    if (this.idTipoHistoriaClinicaDental) {
+      this.lstPregAntecedenDental = data.modelo.filter(x => x.idTipoHistoriaClinica == this.idTipoHistoriaClinicaDental)
+      this.lstPregAntecedenDental.forEach(element => {
+        (this.formAnteDental.controls.preguntas as UntypedFormArray).push(this.formBuilder.group({
+          preguntaDesc: [element.descripcion],
+          idPregunta: [element.idPregunta],
+          descripcion: [element.descripcionRespuesta],
+          siNo: [element.respuestaRapida, requeridoPregunta],
+          idRespuesta: [0]
+
+        }));
+      });
+    }
 
   }
   /********************************************************************** *
   /////////////////////////////////WEB SERVIES/////////////////////////////////
   /********************************************************************** */
 
+
+  obtenerTiposHistoriaClinica() {
+    this.catalogoService.obtenerTiposHitoriasClinicas({ idTipoUsuario: this.sesionService.getSesion()?.idTipoUsuario }).subscribe((data: any) => {
+      if (data.estatus == 200) {
+        const dental = data.modelo.find(x => x.descripcion === 'Historia Clínica Dental');
+        if (dental) {
+          this.idTipoHistoriaClinicaDental = dental.idTipoHistoriaClinica;
+          this.esDentista = true;
+          this.pasoRegistroCompleto = 6;
+          this.pasosWizard = [...this.pasosWizard.slice(0, -1), 'Historia Clínica Dental', 'Registro Completo'];
+        }
+      } else {
+        this.toast.mostrar(data.mensaje, EnumTipoToast.info)
+      }
+      this.obtenerPreguntasRespuestasXPaciente();
+    }, err => {
+      this.toast.mostrar(err, EnumTipoToast.error)
+      this.obtenerPreguntasRespuestasXPaciente();
+    })
+  }
 
   obtenerPreguntasRespuestasXPaciente() {
     this.pacienteService.obtenerPreguntasRespuestasXPaciente({ idPaciente: this.idPaciente }).subscribe((data: any) => {

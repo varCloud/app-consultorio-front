@@ -1,0 +1,11 @@
+{
+  "routes": {
+    "list": "/pacientes/paciente"
+  },
+  "selectors": {
+    "btnRegistrar": "Registrar",
+    "modal": ".modal-content",
+    "btnSiguiente": "button[type=\"submit\"]",
+    "invalidFeedback": ".invalid-feedback"
+  }
+}

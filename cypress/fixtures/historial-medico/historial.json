@@ -1,0 +1,15 @@
+{
+  "routes": {
+    "historial": "/historial-medico/historial"
+  },
+  "selectors": {
+    "ngSelect": "ng-select",
+    "dropdownPanel": ".ng-dropdown-panel"
+  },
+  "paciente": {
+    "idPaciente": 1,
+    "nombres": "Juan",
+    "apellidoPaterno": "Pérez",
+    "apellidoMaterno": ""
+  }
+}
