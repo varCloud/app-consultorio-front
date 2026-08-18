@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Angular CLI 17 app (incrementally migrated from 11; see [.claude memory]/project history for the per-major bump log). There is no local `ng` wrapper script, so use `npx ng`.
+Angular CLI 18 app (incrementally migrated from 11; see [.claude memory]/project history for the per-major bump log). There is no local `ng` wrapper script, so use `npx ng`.
 
 ```bash
 nvm use                          # Node 18.20.4 (see .nvmrc) — see below
@@ -12,12 +12,12 @@ npm install
 npm run serve                    # dev server on http://localhost:4200
 npm run build                    # -> dist/ (dev config; aot: true)
 npm test                         # karma + jasmine (Chrome), watch mode
-npm run lint                     # tslint + codelyzer
+npm run lint                     # BROKEN: @angular-devkit/build-angular no longer ships a tslint builder (removed upstream years ago); errors with "Cannot find builder"
 npm start                        # NOT a dev server — express (server.js) serving dist/ on PORT || 8888
 npx ng e2e                       # protractor
 ```
 
-**Node >=18.13.0 or >=20.9.0 is required** (`engines` in [package.json](package.json); pinned to 18.20.4 in [.nvmrc](.nvmrc)). The old Node 16 pin and the webpack4/md4/`ERR_OSSL_EVP_UNSUPPORTED`/`--openssl-legacy-provider` constraint documented here previously no longer apply — they were specific to the Angular 11-12 builder and were already moot by the time the app reached Angular 16/17. If your machine doesn't have 18.20.4 installed via nvm, any Node satisfying the `engines` range above (e.g. 20.19.x) works fine too.
+**Node ^18.19.1, ^20.11.1, or >=22.0.0 is required** (`engines` in [package.json](package.json); pinned to 18.20.4 in [.nvmrc](.nvmrc)) — Angular 18 raised the floor from the 18.13.0/20.9.0 that Angular 17 accepted. The old Node 16 pin and the webpack4/md4/`ERR_OSSL_EVP_UNSUPPORTED`/`--openssl-legacy-provider` constraint documented here previously no longer apply — they were specific to the Angular 11-12 builder and were already moot by the time the app reached Angular 16/17. If your machine doesn't have 18.20.4 installed via nvm, any Node satisfying the `engines` range above (e.g. 20.19.x) works fine too.
 
 A production build is `npx ng build --configuration production` (AOT + `environment.prod.ts`, same AOT compiler the default `npm run build` now uses too). The `--prod` alias was removed in Angular 14 (`ng build --prod` now errors with `Unknown argument: prod`) — use `--configuration production` instead. The wizard forms in `mdl-registra-paciente.component.ts/.html` use getter-based casts (`getFrmPreguntaFam`, `getFrmPreguntaPersonales`, `getFrmPreguntaGineco`, `getFrmPreguntaPatologicos`) to work around `FormArray.controls` not typechecking through `AbstractControl` — copy that pattern for any new nested-`FormArray` template.
 

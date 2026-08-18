@@ -66,24 +66,39 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": true,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "nobleui-angular:build"
+            "buildTarget": "nobleui-angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "nobleui-angular:build:production"
+              "buildTarget": "nobleui-angular:build:production"
+            },
+            "development": {
+              "buildTarget": "nobleui-angular:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "nobleui-angular:build"
+            "buildTarget": "nobleui-angular:build"
           }
         },
         "test": {
