@@ -22,7 +22,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -35,7 +35,6 @@
 
             ],
             "scripts": [
-              "node_modules/apexcharts/dist/apexcharts.min.js",
               "node_modules/crypto-js/crypto-js.js"
             ]
           },
@@ -50,7 +49,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -68,24 +66,39 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": true,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "nobleui-angular:build"
+            "buildTarget": "nobleui-angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "nobleui-angular:build:production"
+              "buildTarget": "nobleui-angular:build:production"
+            },
+            "development": {
+              "buildTarget": "nobleui-angular:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "nobleui-angular:build"
+            "buildTarget": "nobleui-angular:build"
           }
         },
         "test": {
@@ -133,8 +146,33 @@
       }
     }
   },
-  "defaultProject": "nobleui-angular",
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
   }
 }

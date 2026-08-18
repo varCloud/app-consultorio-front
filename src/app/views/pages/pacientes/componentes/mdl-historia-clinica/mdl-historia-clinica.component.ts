@@ -4,12 +4,13 @@ import { ToastService, EnumTipoToast } from 'src/app/utils/toast.service';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { NotaMedicaUtilsService } from 'src/app/utils/nota-medica-utils.service';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.vfs = pdfFonts;
 
 @Component({
-  selector: 'app-mdl-historia-clinica',
-  templateUrl: './mdl-historia-clinica.component.html',
-  styleUrls: ['./mdl-historia-clinica.component.scss']
+    selector: 'app-mdl-historia-clinica',
+    templateUrl: './mdl-historia-clinica.component.html',
+    styleUrls: ['./mdl-historia-clinica.component.scss'],
+    standalone: false
 })
 export class MdlHistoriaClinicaComponent implements OnInit {
   @Input() public modelo;

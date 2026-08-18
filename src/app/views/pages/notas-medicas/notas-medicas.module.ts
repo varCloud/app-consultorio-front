@@ -7,8 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDropdownModule, NgbDatepickerModule, NgbTooltipModule, NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ArchwizardModule } from 'angular-archwizard';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FeahterIconModule } from 'src/app/core/feather-icon/feather-icon.module';
 import { QuillModule } from 'ngx-quill';
@@ -24,16 +23,17 @@ import { NotaMedicaComponent } from './nota-medica/nota-medica.component'
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxMaskModule.forRoot({ validation: true}),
+    NgxMaskDirective,
     NgbDropdownModule,
-    ArchwizardModule,
-    NgxMaskModule.forRoot(),
     NgbDatepickerModule,
     FeahterIconModule,
     NgbTooltipModule,
     QuillModule.forRoot(),
     ComponentesCompartidosModule,
     NgbAlertModule
+  ],
+  providers: [
+    provideNgxMask({ validation: true })
   ]
 })
 export class NotasMedicasModule { }

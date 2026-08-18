@@ -4,9 +4,10 @@ import { Router, RouteConfigLoadStart, RouteConfigLoadEnd } from '@angular/route
 import { ObservableService } from 'src/app/utils/observable.service';
 
 @Component({
-  selector: 'app-base',
-  templateUrl: './base.component.html',
-  styleUrls: ['./base.component.scss']
+    selector: 'app-base',
+    templateUrl: './base.component.html',
+    styleUrls: ['./base.component.scss'],
+    standalone: false
 })
 export class BaseComponent implements OnInit {
 

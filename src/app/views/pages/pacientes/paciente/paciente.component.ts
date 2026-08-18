@@ -13,9 +13,10 @@ import { MdlUltimaNotaComponent } from '../../componentes-compartidos/mdl-ultima
 
 
 @Component({
-  selector: 'app-paciente',
-  templateUrl: './paciente.component.html',
-  styleUrls: ['./paciente.component.scss']
+    selector: 'app-paciente',
+    templateUrl: './paciente.component.html',
+    styleUrls: ['./paciente.component.scss'],
+    standalone: false
 })
 export class PacienteComponent implements OnInit {
   color1 = "#727cf5";

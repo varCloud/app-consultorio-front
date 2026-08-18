@@ -1,14 +1,15 @@
 import { NavegacionService } from './../../../servicios/navegacion/navegacion.service';
 import { SesionService } from 'src/app/utils/sesion.service';
-import { Component, OnInit, ViewChild, ElementRef, Inject, Renderer2 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef, Inject, Renderer2, DOCUMENT } from '@angular/core';
+
 import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    standalone: false
 })
 export class NavbarComponent implements OnInit {
 

@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Renderer2, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Renderer2, Inject, DOCUMENT } from '@angular/core';
 
-import MetisMenu from 'metismenujs/dist/metismenujs';
+
+import MetisMenu from 'metismenujs';
 
 import { MENU } from './menu';
 import { MenuItem } from '../../../entidades/menu.model';
@@ -9,9 +9,10 @@ import { Router, NavigationEnd } from '@angular/router';
 import { NavegacionService } from 'src/app/servicios/navegacion/navegacion.service';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+    selector: 'app-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.scss'],
+    standalone: false
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
 

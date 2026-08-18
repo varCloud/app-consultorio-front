@@ -7,6 +7,9 @@
 node_modules/
 dist/
 
+# Angular CLI build cache (introduced by @angular/cli 13)
+.angular/
+
 # Compiled Java class files
 *.class
 
@@ -52,3 +55,8 @@ Thumbs.db
 
 # CodeGraph local index
 .codegraph/
+
+# Cypress run artifacts
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/

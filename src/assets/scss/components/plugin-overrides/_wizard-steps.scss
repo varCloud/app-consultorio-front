@@ -1,0 +1,66 @@
+.wizard-steps-indicator {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+
+  li {
+    flex: 1;
+    text-align: center;
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: calc(50% + 20px);
+      right: calc(-50% + 20px);
+      height: 2px;
+      background-color: theme-color(light);
+    }
+
+    .step-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: theme-color(light);
+      color: $text-muted;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .label {
+      display: block;
+      margin-top: 0.5rem;
+      color: $text-muted;
+      font-size: 0.8125rem;
+    }
+
+    &.done {
+      .step-indicator {
+        background-color: theme-color(success);
+        color: #fff;
+      }
+
+      &:not(:last-child)::after {
+        background-color: theme-color(success);
+      }
+    }
+
+    &.current {
+      .step-indicator {
+        background-color: theme-color(primary);
+        color: #fff;
+      }
+
+      .label {
+        color: theme-color(primary);
+        font-weight: 600;
+      }
+    }
+  }
+}

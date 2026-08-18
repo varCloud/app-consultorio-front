@@ -4,13 +4,11 @@ import { CommonModule } from '@angular/common';
 
 import { PerfilDocRoutingModule } from './perfil-doc-routing.module';
 import { PerfilComponent } from './perfil/perfil.component';
-import { CustomFormsModule } from 'ngx-custom-validators';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { NgbAlertModule, NgbDatepickerModule, NgbDropdownModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ArchwizardModule } from 'angular-archwizard';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FeahterIconModule } from 'src/app/core/feather-icon/feather-icon.module';
 import { ComponentesCompartidosModule } from '../componentes-compartidos/componentes-compartidos.module';
@@ -24,22 +22,23 @@ import { ComponentesCompartidosModule } from '../componentes-compartidos/compone
     FormsModule,
     ReactiveFormsModule,
     ColorPickerModule,
-    CustomFormsModule,
     NgbAlertModule,
     NgxDatatableModule,
     NgxSkeletonLoaderModule,
     NgSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxMaskModule.forRoot({ validation: true}),
+    NgxMaskDirective,
     NgbDropdownModule,
-    ArchwizardModule,
     NgbDatepickerModule,
     FeahterIconModule,
     NgbTooltipModule,
     ComponentesCompartidosModule,
     NgbAlertModule,
     ColorPickerModule
+  ],
+  providers: [
+    provideNgxMask({ validation: true })
   ]
 })
 export class PerfilDocModule { }

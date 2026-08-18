@@ -11,12 +11,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MdlUltimaNotaComponent } from '../../componentes-compartidos/mdl-ultima-nota/mdl-ultima-nota.component';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.vfs = pdfFonts;
 
 @Component({
-  selector: 'app-historial',
-  templateUrl: './historial.component.html',
-  styleUrls: ['./historial.component.scss']
+    selector: 'app-historial',
+    templateUrl: './historial.component.html',
+    styleUrls: ['./historial.component.scss'],
+    standalone: false
 })
 export class HistorialComponent implements OnInit {
 

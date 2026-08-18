@@ -8,9 +8,10 @@ import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbModal } from '@ng-boot
 import { MdlUltimaNotaComponent } from '../../componentes-compartidos/mdl-ultima-nota/mdl-ultima-nota.component';
 
 @Component({
-  selector: 'app-nota-medica',
-  templateUrl: './nota-medica.component.html',
-  styleUrls: ['./nota-medica.component.scss']
+    selector: 'app-nota-medica',
+    templateUrl: './nota-medica.component.html',
+    styleUrls: ['./nota-medica.component.scss'],
+    standalone: false
 })
 export class NotaMedicaComponent implements OnInit {
   /****************TABLAS ***********/

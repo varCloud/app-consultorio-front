@@ -11,6 +11,14 @@
   }
 }
 
+// ng-bootstrap 15+ sets z-index: 1055 as an inline style on ngb-modal-backdrop (matching
+// Bootstrap 5's stacking scale), which beats this Bootstrap 4 theme's `.modal { z-index: 1050 }`
+// class rule and puts the backdrop in front of the modal. Needs !important to win over an
+// inline style. Keep below Bootstrap 4's $zindex-modal (1050).
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
 @keyframes modal-animation {
   0%   {transform: scale(0.9)}
   100% {transform: scale(1)}
