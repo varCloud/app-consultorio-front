@@ -10,9 +10,10 @@ pdfMake.vfs = pdfFonts;
 
 
 @Component({
-  selector: 'app-mdl-ultima-nota',
-  templateUrl: './mdl-ultima-nota.component.html',
-  styleUrls: ['./mdl-ultima-nota.component.scss']
+    selector: 'app-mdl-ultima-nota',
+    templateUrl: './mdl-ultima-nota.component.html',
+    styleUrls: ['./mdl-ultima-nota.component.scss'],
+    standalone: false
 })
 export class MdlUltimaNotaComponent implements OnInit {
   tituloModal = "Ultima nota medica"

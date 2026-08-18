@@ -11,9 +11,10 @@ import { NotaMedicaUtilsService } from 'src/app/utils/nota-medica-utils.service'
 
 
 @Component({
-  selector: 'app-agregar-nota-medica',
-  templateUrl: './agregar-nota-medica.component.html',
-  styleUrls: ['./agregar-nota-medica.component.scss']
+    selector: 'app-agregar-nota-medica',
+    templateUrl: './agregar-nota-medica.component.html',
+    styleUrls: ['./agregar-nota-medica.component.scss'],
+    standalone: false
 })
 export class AgregarNotaMedicaComponent implements OnInit {
   formRegistro: UntypedFormGroup;

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Angular CLI 18 app (incrementally migrated from 11; see [.claude memory]/project history for the per-major bump log). There is no local `ng` wrapper script, so use `npx ng`.
+Angular CLI 19 app (incrementally migrated from 11; see [.claude memory]/project history for the per-major bump log). There is no local `ng` wrapper script, so use `npx ng`.
 
 ```bash
 nvm use                          # Node 18.20.4 (see .nvmrc) — see below

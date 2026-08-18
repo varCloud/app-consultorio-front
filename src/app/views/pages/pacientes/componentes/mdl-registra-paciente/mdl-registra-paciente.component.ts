@@ -9,9 +9,10 @@ import { SesionService } from 'src/app/utils/sesion.service';
 import { ToastService, EnumTipoToast } from 'src/app/utils/toast.service';
 
 @Component({
-  selector: 'app-mdl-registra-paciente',
-  templateUrl: './mdl-registra-paciente.component.html',
-  styleUrls: ['./mdl-registra-paciente.component.scss']
+    selector: 'app-mdl-registra-paciente',
+    templateUrl: './mdl-registra-paciente.component.html',
+    styleUrls: ['./mdl-registra-paciente.component.scss'],
+    standalone: false
 })
 export class MdlRegistraPacienteComponent implements OnInit {
 

@@ -14,9 +14,10 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts;
 
 @Component({
-  selector: 'app-historial',
-  templateUrl: './historial.component.html',
-  styleUrls: ['./historial.component.scss']
+    selector: 'app-historial',
+    templateUrl: './historial.component.html',
+    styleUrls: ['./historial.component.scss'],
+    standalone: false
 })
 export class HistorialComponent implements OnInit {
 

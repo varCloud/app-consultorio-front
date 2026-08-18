@@ -6,9 +6,10 @@ import { SesionService } from 'src/app/utils/sesion.service';
 import { ToastService } from 'src/app/utils/toast.service';
 
 @Component({
-  selector: 'app-tabla-usuarios',
-  templateUrl: './tabla-usuarios.component.html',
-  styleUrls: ['./tabla-usuarios.component.scss']
+    selector: 'app-tabla-usuarios',
+    templateUrl: './tabla-usuarios.component.html',
+    styleUrls: ['./tabla-usuarios.component.scss'],
+    standalone: false
 })
 export class TablaUsuariosComponent implements OnInit {
 

@@ -9,7 +9,8 @@ import { Subscription } from 'rxjs';
  * Page load animation
  */
 @Directive({
-	selector: '[contentAnimate]'
+    selector: '[contentAnimate]',
+    standalone: false
 })
 export class ContentAnimateDirective implements OnInit, OnDestroy {
   
