@@ -6,6 +6,19 @@
     "btnRegistrar": "Registrar",
     "modal": ".modal-content",
     "btnSiguiente": "button[type=\"submit\"]",
-    "invalidFeedback": ".invalid-feedback"
+    "invalidFeedback": ".invalid-feedback",
+    "btnEliminar": ".btn-danger"
+  },
+  "mockPaciente": {
+    "idPaciente": 456,
+    "idUsuario": 12,
+    "idTipoUsuario": 1,
+    "nombres": "Juan",
+    "apellidoPaterno": "Perez",
+    "apellidoMaterno": "Lopez",
+    "nombreCompleto": "Juan Perez Lopez",
+    "correo": "juan@test.com",
+    "telefono": "5555555555",
+    "fechaUltimaNotaMedica": null
   }
 }

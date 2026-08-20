@@ -69,16 +69,6 @@ export class TablaUsuariosComponent implements OnInit {
 
   onDesactivar(item) {
     this.OutPutOnDesactivar.emit(item)
-    /*Swal.fire({
-      title: 'Estas seguro que desea eliminar el registro?',
-      showCancelButton: true,
-      confirmButtonText: 'Eliminar',
-      icon: 'question',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.desactivarUsuario(item)
-      }
-    })*/
   }
 
   onVer(item) {

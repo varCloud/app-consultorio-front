@@ -4,6 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbDateStruct, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { EnumTipoUsuario } from 'src/app/entidades/enumeraciones';
 import { UsuarioService } from 'src/app/servicios/usuario/usuario.service';
+import { PacienteService } from 'src/app/servicios/paciente/paciente.service';
 import { SesionService } from 'src/app/utils/sesion.service';
 import { ToastService, EnumTipoToast } from 'src/app/utils/toast.service';
 import Swal from 'sweetalert2';
@@ -38,6 +39,7 @@ export class PacienteComponent implements OnInit {
   constructor(private modalService: NgbModal,
     private sesionService: SesionService,
     private usuarioService: UsuarioService,
+    private pacienteService: PacienteService,
     private toastService: ToastService,
     private router:Router,
 
@@ -101,7 +103,7 @@ export class PacienteComponent implements OnInit {
       icon: 'question',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.desactivarUsuario(item)
+        this.eliminarPaciente(item)
       }
     })
   }
@@ -169,11 +171,12 @@ export class PacienteComponent implements OnInit {
     })
   }
 
-  desactivarUsuario(item) {
-    let postData = { idUsuario: item.idUsuario, estatus: 0 }
-    this.usuarioService.actualizarEstadoUsuario(postData).subscribe((data: any) => {
+  eliminarPaciente(item) {
+    let postData = { idPaciente: item.idPaciente }
+    this.pacienteService.eliminarPaciente(postData).subscribe((data: any) => {
       if (data.estatus == 200) {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.success)
+        this.obtenerUsuarios();
       } else {
         this.toastService.mostrar(data.mensaje, EnumTipoToast.info)
       }

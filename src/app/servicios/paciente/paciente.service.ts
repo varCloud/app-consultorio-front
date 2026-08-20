@@ -26,7 +26,9 @@ export class PacienteService {
     return this.httpClient.post(this.url + 'obtenerPacienteXId', data);
   }
 
-
+  eliminarPaciente(data: any) {
+    return this.httpClient.post(this.url + 'eliminarPaciente', data);
+  }
 
 
 

@@ -20,7 +20,8 @@
 
 
 <app-tabla-usuarios [PintarTabla]="this.lstPacientes" (OutPutOnAgregarNota)="this.onAgregarNotaMedica($event)"
-  (OutPutOnEditar)="this.onEditar($event)" (OutPutOnVer)="this.onVer($event)" (OutPutOnUltimaNota)="this.onUltimaNotaMedica($event)" ></app-tabla-usuarios>
+  (OutPutOnEditar)="this.onEditar($event)" (OutPutOnVer)="this.onVer($event)" (OutPutOnUltimaNota)="this.onUltimaNotaMedica($event)"
+  (OutPutOnDesactivar)="this.onDesactivar($event)" ></app-tabla-usuarios>
 
 <!-- <app-mdl-registra-paciente #mdlWizard
  [AbrirModal]="this.model"
